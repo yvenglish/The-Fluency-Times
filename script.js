@@ -1,171 +1,160 @@
-/* EDITE AS NOTÍCIAS AQUI */
-
-const START_DATE = "2026-05-24";
-
-const DAILY_NEWS = [
+const stories = [
   {
-    edition: "Sunday Edition",
-    topic: "Economy · United States · Brazil",
-    image: "news/SUA-IMAGEM-AQUI.avif",
-    imageCaption: "US Economy and Brazil Impact · The Fluency Times",
+    date: "May 24, 2026",
+    title: "A New AI Tool Is Changing Education",
 
     levels: {
       1: {
-        title: "Kevin Warsh Becomes Fed Chair",
-        paragraphs: [
-          "Kevin Warsh is now the chair of the US Federal Reserve.",
-          "The Federal Reserve is the central bank of the United States.",
-          "Its decisions can affect prices, jobs, and other countries."
-        ],
-        words: [
-          "chair = presidente / chefe",
-          "central bank = banco central",
-          "prices = preços",
-          "jobs = empregos"
-        ],
+        text: "Many students are using artificial intelligence to study English and other subjects. Teachers say technology can help if students use it correctly.",
+
         questions: [
-          "Who is Kevin Warsh?",
-          "What is the Federal Reserve?",
-          "Can the Federal Reserve affect other countries?"
+          "What are students using?",
+          "Can technology help students?",
+          "How should students use AI?"
         ]
       },
 
       2: {
-        title: "Kevin Warsh Takes Over the Federal Reserve",
-        paragraphs: [
-          "Kevin Warsh has become the new chair of the US Federal Reserve.",
-          "He takes over at a difficult moment, as many Americans are worried about the cost of living.",
-          "The Federal Reserve controls important interest rate decisions, which can affect the US economy and other countries, including Brazil."
-        ],
-        words: [
-          "take over = assumir",
-          "cost of living = custo de vida",
-          "interest rates = taxas de juros",
-          "including = incluindo"
-        ],
+        text: "Artificial intelligence is becoming more common in education. Many students use AI tools to practice languages, organize notes, and improve productivity. Some teachers believe these tools are useful when used responsibly.",
+
         questions: [
-          "Why is this a difficult moment for the United States?",
-          "What does the Federal Reserve control?",
-          "How can US interest rates affect Brazil?"
+          "Why are students using AI?",
+          "What do teachers think about it?",
+          "How can AI improve productivity?"
         ]
       },
 
       3: {
-        title: "Kevin Warsh’s Appointment May Affect Global Markets",
-        paragraphs: [
-          "Kevin Warsh has been sworn in as chair of the US Federal Reserve at a time of economic uncertainty.",
-          "His appointment comes as Donald Trump faces criticism over inflation, interest rates, and the cost of living.",
-          "For Brazil, the decision may influence the dollar-real exchange rate, foreign capital flows, and pressure on the Selic rate."
-        ],
-        words: [
-          "appointment = nomeação",
-          "uncertainty = incerteza",
-          "exchange rate = taxa de câmbio",
-          "foreign capital flows = fluxo de capital estrangeiro",
-          "pressure = pressão"
-        ],
+        text: "Artificial intelligence has rapidly expanded into educational environments, transforming how students engage with information. From language acquisition to productivity enhancement, AI-powered platforms are reshaping study routines. However, educators continue debating the ethical and pedagogical implications of relying too heavily on these systems.",
+
         questions: [
-          "Why is Warsh’s appointment important for global markets?",
-          "What problems is Trump facing in the economy?",
-          "In your opinion, why should Brazilians pay attention to the Federal Reserve?"
+          "How is AI transforming education?",
+          "What concerns do educators have?",
+          "What are the benefits of AI platforms?"
         ]
       }
     }
   }
-
-  /* COPIE O BLOCO ACIMA PARA ADICIONAR OUTRA DATA */
 ];
 
-/* NÃO MEXE DAQUI PARA BAIXO */
-
 let currentLevel = 1;
+let currentStory = stories[0];
 
-function formatHeaderDate(date) {
-  return date.toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric"
-  }).toUpperCase();
-}
+const titleEl = document.getElementById("newsTitle");
+const dateEl = document.getElementById("newsDate");
+const textEl = document.getElementById("newsText");
+const questionsContainer = document.getElementById("questionsContainer");
 
-function getTodayIndex() {
-  const today = new Date();
-  const start = new Date(START_DATE + "T00:00:00");
+function renderStory() {
 
-  today.setHours(0, 0, 0, 0);
-  start.setHours(0, 0, 0, 0);
+  titleEl.textContent = currentStory.title;
+  dateEl.textContent = currentStory.date;
 
-  const diff = Math.floor((today - start) / 86400000);
-  return ((diff % DAILY_NEWS.length) + DAILY_NEWS.length) % DAILY_NEWS.length;
-}
+  textEl.textContent =
+    currentStory.levels[currentLevel].text;
 
-function getCurrentNews() {
-  return DAILY_NEWS[getTodayIndex()];
-}
+  questionsContainer.innerHTML = "";
 
-function renderNews() {
-  const today = new Date();
-  const news = getCurrentNews();
-  const levelData = news.levels[currentLevel];
+  currentStory.levels[currentLevel].questions.forEach((q, index) => {
 
-  document.getElementById("ddate").textContent = formatHeaderDate(today);
+    questionsContainer.innerHTML += `
+      <div class="qblock">
+        <strong>Question ${index + 1}</strong>
+        <p>${q}</p>
+      </div>
+    `;
 
-  document.getElementById("lvtxt").textContent = `Level ${currentLevel}`;
-
-  document.getElementById("newsEdition").textContent = news.edition;
-  document.getElementById("newsTopic").textContent = news.topic;
-
-  document.getElementById("ahead").textContent = levelData.title;
-
-  document.getElementById("abody").innerHTML = levelData.paragraphs
-    .map(paragraph => `<p>${paragraph}</p>`)
-    .join("");
-
-  const image = document.getElementById("newsImage");
-  if (image) {
-    image.src = news.image;
-    image.alt = levelData.title;
-  }
-
-  const caption = document.getElementById("imageCaption");
-  if (caption) caption.textContent = news.imageCaption;
-
-  const wordsBox = document.getElementById("words");
-  if (wordsBox) {
-    wordsBox.innerHTML = levelData.words
-      .map(word => `<span>${word}</span>`)
-      .join("");
-  }
-
-  const questionsContainer = document.getElementById("questionsContainer");
-  if (questionsContainer) {
-    questionsContainer.innerHTML = levelData.questions
-      .map((question, index) => `
-        <div class="qblock">
-          <div class="qhdr">Question ${index + 1}</div>
-          <div class="qbody">
-            <p class="qtxt">${question}</p>
-            <textarea class="atxt" name="question_${index + 1}" placeholder="Write your answer here..." required></textarea>
-          </div>
-        </div>
-      `)
-      .join("");
-  }
-
-  document.querySelectorAll(".lbtn").forEach(button => {
-    button.classList.toggle(
-      "active",
-      Number(button.dataset.level) === currentLevel
-    );
   });
+
+  document.querySelectorAll(".lbtn").forEach(btn => {
+
+    btn.classList.remove("active");
+
+    if(btn.dataset.level == currentLevel){
+      btn.classList.add("active");
+    }
+
+  });
+
 }
 
-document.querySelectorAll(".lbtn").forEach(button => {
-  button.addEventListener("click", () => {
-    currentLevel = Number(button.dataset.level);
-    renderNews();
+document.querySelectorAll(".lbtn").forEach(btn => {
+
+  btn.addEventListener("click", () => {
+
+    currentLevel = Number(btn.dataset.level);
+
+    renderStory();
+
   });
+
 });
 
-renderNews();
+
+// =========================
+// BROWSER READING
+// =========================
+
+const synth = window.speechSynthesis;
+
+let utterance;
+
+
+// START BUTTON
+
+document.getElementById("startBtn")
+.addEventListener("click", () => {
+
+  synth.cancel();
+
+  utterance = new SpeechSynthesisUtterance(
+    currentStory.levels[currentLevel].text
+  );
+
+  utterance.lang = "en-US";
+
+  utterance.rate = 0.95;
+
+  synth.speak(utterance);
+
+});
+
+
+// PAUSE BUTTON
+
+document.getElementById("pauseBtn")
+.addEventListener("click", () => {
+
+  if (synth.speaking && !synth.paused) {
+
+    synth.pause();
+
+  } else if (synth.paused) {
+
+    synth.resume();
+
+  }
+
+});
+
+
+// RESTART BUTTON
+
+document.getElementById("restartBtn")
+.addEventListener("click", () => {
+
+  synth.cancel();
+
+  utterance = new SpeechSynthesisUtterance(
+    currentStory.levels[currentLevel].text
+  );
+
+  utterance.lang = "en-US";
+
+  utterance.rate = 0.95;
+
+  synth.speak(utterance);
+
+});
+
+renderStory();
