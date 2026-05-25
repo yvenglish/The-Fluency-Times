@@ -40,6 +40,24 @@ body{background:var(--bg);color:var(--white);font-family:"DM Sans",sans-serif;mi
 .alabel{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.85rem;display:flex;align-items:center;gap:8px}
 .alabel::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--purlt)}
 .abox iframe{width:100%;border:none;border-radius:5px;display:block}
+
+/* ===== NOVO: imagem em recorte + botões de nível + leitura do navegador ===== */
+.levels{display:flex;gap:.55rem;justify-content:center;flex-wrap:wrap;padding:1.1rem 0 0}
+.lbtn{background:rgba(255,255,255,.04);color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:8px 14px;font-family:"DM Sans",sans-serif;font-size:10px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;cursor:pointer;transition:.2s}
+.lbtn:hover,.lbtn.active{background:rgba(144,96,208,.16);border-color:var(--purlt);color:var(--purxl)}
+.news-visual{position:relative;margin:1.1rem 0 1.35rem;max-width:360px;transform:rotate(-1.2deg)}
+.news-visual::before{content:"";position:absolute;inset:10px -8px -10px 8px;background:rgba(201,145,74,.18);border-radius:10px;transform:rotate(2.3deg);z-index:0}
+.news-visual::after{content:"YV NEWS";position:absolute;top:-10px;left:22px;background:#efe7da;color:#3b254f;padding:5px 14px;border-radius:2px;font-size:9px;font-weight:700;letter-spacing:.16em;transform:rotate(-4deg);box-shadow:0 8px 20px rgba(0,0,0,.22);z-index:2}
+.news-img{position:relative;z-index:1;width:100%;height:210px;object-fit:cover;display:block;border:8px solid #efe7da;border-bottom-width:26px;border-radius:8px;filter:saturate(.86) contrast(1.03);box-shadow:0 18px 35px rgba(0,0,0,.28)}
+.news-caption{position:absolute;z-index:3;right:14px;bottom:7px;font-family:"Cormorant Garamond",serif;font-style:italic;color:#4c3364;font-size:.9rem}
+.listen-controls{display:grid;grid-template-columns:1fr;gap:.7rem}
+.audio-row{display:flex;gap:.65rem;flex-wrap:wrap}
+.audio-btn{flex:1;min-width:120px;background:var(--bg2);border:1px solid var(--border);color:var(--purxl);padding:12px 14px;border-radius:8px;font-family:"DM Sans",sans-serif;font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;cursor:pointer;transition:.2s}
+.audio-btn:hover{border-color:var(--purlt);background:#180b2b}
+.audio-btn.primary{background:var(--pur);border-color:var(--pur);color:#fff}
+.audio-note{font-size:12px;color:var(--muted);font-style:italic;line-height:1.6}
+@media(min-width:640px){.story-top{display:grid;grid-template-columns:1fr 280px;gap:1.35rem;align-items:start}.news-visual{margin-top:.2rem}.news-img{height:190px}}
+
 .apholder{background:var(--bglight);border-radius:6px;padding:1.2rem;text-align:center;color:var(--muted);font-size:13px;line-height:1.8}
 .apholder code{background:rgba(255,255,255,.07);padding:2px 7px;border-radius:3px;font-size:12px;color:var(--purxl)}
 .qsec{padding:0 0 3rem}
@@ -106,23 +124,44 @@ footer{background:#08031a;border-top:1px solid var(--borderl);padding:1.75rem 1r
 <main class="page">
   <section class="asec">
     <p class="slabel">Today's Story</p>
-    <h2 class="ahead" id="ahead">Cuba has no oil</h2>
-    <div class="abody" id="abody">
-      <p>Cuba has no more oil. There is almost no energy left for the country. This is happening because the US is stopping other countries from sending oil to Cuba.</p>
-      <p>Now, the island has big power cuts. People have no energy for 22 hours every day. They live in the dark. They cannot use their fridges, so food goes bad quickly. There is also very little food to buy.</p>
-      <p>Because life is so hard, many angry people go into the streets of the capital city. They burn things. Protests are not usual in Cuba. The police usually stop them. The US says that it will give money and help, but only if Cuba changes its political system. People are tired of the situation and want change.</p>
+
+    <div class="levels" aria-label="Choose your English level">
+      <button class="lbtn active" type="button" data-level="1">Level 1</button>
+      <button class="lbtn" type="button" data-level="2">Level 2</button>
+      <button class="lbtn" type="button" data-level="3">Level 3</button>
+    </div>
+
+    <div class="story-top">
+      <div>
+        <h2 class="ahead" id="ahead">—</h2>
+        <div class="abody" id="abody"></div>
+      </div>
+
+      <figure class="news-visual">
+        <img class="news-img" id="newsimg" src="" alt="News image">
+        <figcaption class="news-caption" id="newscap">daily edition</figcaption>
+      </figure>
     </div>
   </section>
+
   <div class="div"><span>✦ ✦ ✦</span></div>
+
   <section>
     <div class="abox">
       <p class="alabel">Listen to the Story</p>
-      <div id="audio-embed">
-        <div class="apholder">🎧 <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2322321737&color=ff5500"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/newsinlevels" title="News in Levels" target="_blank" style="color: #cccccc; text-decoration: none;">News in Levels</a> · <a href="https://soundcloud.com/newsinlevels/cuba-has-no-oil-level-1" title="Cuba has no oil – level 1" target="_blank" style="color: #cccccc; text-decoration: none;">Cuba has no oil – level 1</a></div><br> <code>YV Daily News</code></div>
+      <div class="listen-controls">
+        <div class="audio-row">
+          <button class="audio-btn primary" type="button" id="startRead">Start</button>
+          <button class="audio-btn" type="button" id="pauseRead">Pausar</button>
+          <button class="audio-btn" type="button" id="restartRead">Recomeçar</button>
+        </div>
+        <p class="audio-note">Leitura automática pelo navegador. A voz muda conforme o dispositivo do aluno.</p>
       </div>
     </div>
   </section>
+
   <div class="div"><span>✦ ✦ ✦</span></div>
+
   <section class="qsec">
     <p class="slabel">Comprehension Check</p>
     <h3 class="qhead">Answer the Questions</h3>
@@ -130,6 +169,8 @@ footer{background:#08031a;border-top:1px solid var(--borderl);padding:1.75rem 1r
     <form class="qform" id="qform" action="https://api.web3forms.com/submit" method="POST">
       <input type="hidden" name="access_key" value="bb848a85-e477-42c4-b5b5-61358dc488f5">
       <input type="hidden" name="subject" id="fsubj" value="The Fluency Times — Student Answers">
+      <input type="hidden" name="news_title" id="fnews" value="">
+      <input type="hidden" name="english_level" id="flevel" value="Level 1">
       <input type="hidden" name="redirect" value="false">
       <div class="nblock">
         <label class="nlabel" for="sname">Your Name</label>
@@ -138,22 +179,21 @@ footer{background:#08031a;border-top:1px solid var(--borderl);padding:1.75rem 1r
       <div class="qblock">
         <div class="qhdr">Question 1</div>
         <div class="qbody">
-          <p class="qtxt" id="q1">Where is this happening?</p>
+          <p class="qtxt" id="q1">—</p>
           <textarea class="atxt" name="question_1" placeholder="Your answer…" required></textarea>
         </div>
       </div>
       <div class="qblock">
         <div class="qhdr">Question 2</div>
         <div class="qbody">
-          <p class="qtxt" id="q2">What is the text about?</p>
+          <p class="qtxt" id="q2">—</p>
           <textarea class="atxt" name="question_2" placeholder="Your answer…" required></textarea>
         </div>
       </div>
       <div class="qblock">
         <div class="qhdr">Question 3</div>
         <div class="qbody">
-          <p class="qtxt" id="q3">What do you think about the situation?</p>
-        
+          <p class="qtxt" id="q3">—</p>
           <textarea class="atxt" name="message" placeholder="Your answer…" required></textarea>
         </div>
       </div>
@@ -179,22 +219,231 @@ footer{background:#08031a;border-top:1px solid var(--borderl);padding:1.75rem 1r
   <p class="fcopy">YV English · The Fluency Times · Daily Edition</p>
 </footer>
 <script>
-const d=new Date();
-document.getElementById("ddate").textContent=d.toLocaleDateString("en-US",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
-document.getElementById("fsubj").value="The Fluency Times — "+document.getElementById("ahead").textContent.trim();
-document.getElementById("qform").addEventListener("submit",async function(e){
+/* ==========================================================
+   THE FLUENCY TIMES — ÁREA PARA COLOCAR AS NOTÍCIAS
+   ----------------------------------------------------------
+   1) Coloque as notícias dentro da lista NEWS.
+   2) Cada notícia precisa ter: date, title, image, caption, levels.
+   3) Dentro de levels, coloque 1, 2 e 3 com text e questions.
+   4) Todo dia às 00:00, o site troca para a próxima notícia automaticamente.
+   5) Para colocar imagem: salve a imagem na pasta do site e troque o caminho em image.
+      Exemplo: image: "img/cuba-oil.jpg"
+   ========================================================== */
+
+const START_DATE = "2026-05-25"; // primeiro dia da primeira notícia da lista
+
+const NEWS = [
+  {
+  date: "2026-05-25",
+  title: "Possible US-Iran Agreement Raises Debate",
+  image: "https://media-cldnry.s-nbcnews.com/image/upload/t_focal-762x508,f_auto,q_auto:best/rockcms/2026-05/260521-donald-trump-mn-1250-cf38b8.jpg",
+  caption: "global politics",
+  levels: {
+    1: {
+      text: [
+        "The US and Iran may make a deal soon. President Trump says both countries are close to an agreement.",
+        "The deal could reduce problems between the countries and help lower gas prices.",
+        "Some politicians think the agreement may be too weak."
+      ],
+      questions: [
+        "What may happen between the US and Iran?",
+        "Why do people want the deal?",
+        "Do all politicians support the agreement?"
+      ]
+    },
+
+    2: {
+      text: [
+        "President Donald Trump says the US and Iran are close to reaching a new agreement after months of tension and conflict.",
+        "The possible deal could reopen important trade routes and reduce restrictions on Iranian ships, helping the global economy and lowering energy prices.",
+        "However, some American politicians believe the agreement may be too soft on Iran and are criticizing Trump’s approach."
+      ],
+      questions: [
+        "What could the agreement change?",
+        "Why is the deal important for the economy?",
+        "Why are some politicians criticizing Trump?"
+      ]
+    },
+
+    3: {
+      text: [
+        "President Donald Trump claims the US and Iran are close to a diplomatic agreement after months of conflict, though many politicians remain skeptical.",
+        "The proposed framework could reopen the Strait of Hormuz and ease restrictions on Iranian trade routes, potentially reducing global energy instability.",
+        "Critics argue the deal falls far short of Trump’s earlier demands, while supporters believe it may help avoid further economic and military escalation."
+      ],
+      questions: [
+        "Why are many politicians skeptical about the deal?",
+        "How could the agreement affect the global economy?",
+        "Do you think diplomacy is better than military action in situations like this? Why?"
+      ]
+    }
+  }
+},
+  
+  {
+    date: "2026-05-26",
+    title: "A new park opens in the city",
+    image: "https://images.unsplash.com/photo-1493612276216-ee3925520721?auto=format&fit=crop&w=900&q=80",
+    caption: "city life",
+    levels: {
+      1: {
+        text: [
+          "A new park opens in the city. Many families visit it on the first day.",
+          "",
+          "."
+        ],
+        questions: ["What opens in the city?", "What can people do there?", "Would you like to visit this park? Why?"]
+      },
+      2: {
+        text: [
+          "A new public park has opened in the city, giving residents another place to relax, exercise, and spend time outdoors.",
+          "The space includes trees, benches, walking paths, and a children’s area. Local families visited the park during its opening weekend.",
+          "Many residents say the park is important because the neighborhood needs more green areas."
+        ],
+        questions: ["Why is the new park important?", "What features does the park have?", "Do you think cities need more green spaces?"]
+      },
+      3: {
+        text: [
+          "The city has opened a new public park as part of a broader effort to improve urban life and create more accessible green spaces.",
+          "The park includes walking paths, shaded areas, benches, and a playground, attracting families and residents during its opening weekend.",
+          "Supporters argue that spaces like this can improve mental health, encourage physical activity, and strengthen community life."
+        ],
+        questions: ["How can public parks improve urban life?", "What are the possible benefits for the community?", "Should governments invest more in green spaces? Why?"]
+      }
+    }
+  }
+];
+
+let currentLevel = "1";
+let currentNews = null;
+let currentUtterance = null;
+let isPaused = false;
+
+function getTodayNews(){
+  const start = new Date(START_DATE + "T00:00:00");
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const diffDays = Math.floor((today - start) / 86400000);
+  const index = ((diffDays % NEWS.length) + NEWS.length) % NEWS.length;
+  return NEWS[index];
+}
+
+function renderNews(){
+  stopReading();
+  currentNews = getTodayNews();
+  const levelData = currentNews.levels[currentLevel];
+
+  document.getElementById("ddate").textContent = new Date().toLocaleDateString("en-US", {weekday:"long", year:"numeric", month:"long", day:"numeric"});
+  document.getElementById("ahead").textContent = currentNews.title;
+  document.getElementById("abody").innerHTML = levelData.text.map(paragraph => `<p>${paragraph}</p>`).join("");
+  document.getElementById("newsimg").src = currentNews.image;
+  document.getElementById("newsimg").alt = currentNews.title;
+  document.getElementById("newscap").textContent = currentNews.caption || "daily edition";
+
+  document.getElementById("q1").textContent = levelData.questions[0];
+  document.getElementById("q2").textContent = levelData.questions[1];
+  document.getElementById("q3").textContent = levelData.questions[2];
+
+  document.getElementById("lvtxt").textContent = `Level ${currentLevel}`;
+  document.getElementById("lvbadge").className = `badge lv${currentLevel}`;
+  document.getElementById("fsubj").value = `The Fluency Times — ${currentNews.title} — Level ${currentLevel}`;
+  document.getElementById("fnews").value = currentNews.title;
+  document.getElementById("flevel").value = `Level ${currentLevel}`;
+
+  document.querySelectorAll(".lbtn").forEach(btn => btn.classList.toggle("active", btn.dataset.level === currentLevel));
+}
+
+function getTextToRead(){
+  const title = document.getElementById("ahead").textContent.trim();
+  const body = [...document.querySelectorAll("#abody p")].map(p => p.textContent.trim()).join(" ");
+  return `${title}. ${body}`;
+}
+
+function startReading(){
+  if(!("speechSynthesis" in window)){
+    alert("Este navegador não suporta leitura automática.");
+    return;
+  }
+
+  if(isPaused){
+    speechSynthesis.resume();
+    isPaused = false;
+    return;
+  }
+
+  stopReading();
+  currentUtterance = new SpeechSynthesisUtterance(getTextToRead());
+  currentUtterance.lang = "en-US";
+  currentUtterance.rate = currentLevel === "1" ? 0.82 : currentLevel === "2" ? 0.9 : 0.96;
+  currentUtterance.pitch = 1;
+  speechSynthesis.speak(currentUtterance);
+}
+
+function pauseReading(){
+  if(speechSynthesis.speaking && !speechSynthesis.paused){
+    speechSynthesis.pause();
+    isPaused = true;
+  }
+}
+
+function stopReading(){
+  if("speechSynthesis" in window){
+    speechSynthesis.cancel();
+  }
+  currentUtterance = null;
+  isPaused = false;
+}
+
+function restartReading(){
+  stopReading();
+  startReading();
+}
+
+document.querySelectorAll(".lbtn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    currentLevel = btn.dataset.level;
+    renderNews();
+  });
+});
+
+document.getElementById("startRead").addEventListener("click", startReading);
+document.getElementById("pauseRead").addEventListener("click", pauseReading);
+document.getElementById("restartRead").addEventListener("click", restartReading);
+
+// Checa a cada minuto se virou meia-noite. Se virou, atualiza a notícia.
+let lastDay = new Date().getDate();
+setInterval(() => {
+  const dayNow = new Date().getDate();
+  if(dayNow !== lastDay){
+    lastDay = dayNow;
+    renderNews();
+  }
+}, 60000);
+
+renderNews();
+
+document.getElementById("qform").addEventListener("submit", async function(e){
   e.preventDefault();
-  const btn=document.getElementById("sbtn");
-  btn.disabled=true;btn.textContent="Sending…";
+  const btn = document.getElementById("sbtn");
+  btn.disabled = true;
+  btn.textContent = "Sending…";
   try{
-    const r=await fetch("https://api.web3forms.com/submit",{method:"POST",body:new FormData(this)});
-    const data=await r.json();
+    const r = await fetch("https://api.web3forms.com/submit", {method:"POST", body:new FormData(this)});
+    const data = await r.json();
     if(data.success){
-      document.getElementById("smsg").style.display="block";
-      btn.style.display="none";
-      document.getElementById("smsg").scrollIntoView({behavior:"smooth",block:"center"});
-    }else{btn.disabled=false;btn.textContent="Send My Answers ✉";alert("Something went wrong.");}
-  }catch{btn.disabled=false;btn.textContent="Send My Answers ✉";alert("Connection error.");}
+      document.getElementById("smsg").style.display = "block";
+      btn.style.display = "none";
+      document.getElementById("smsg").scrollIntoView({behavior:"smooth", block:"center"});
+    }else{
+      btn.disabled = false;
+      btn.textContent = "Send My Answers ✉";
+      alert("Something went wrong.");
+    }
+  }catch{
+    btn.disabled = false;
+    btn.textContent = "Send My Answers ✉";
+    alert("Connection error.");
+  }
 });
 </script>
 </body>
