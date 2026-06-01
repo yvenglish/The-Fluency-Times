@@ -1,6 +1,6 @@
 const stories = [
   {
-    date: "May 25, 2026",
+    date: "July, 1, 2026",
     title: "Israel Expands Offensive in Lebanon",
 
     levels: {
