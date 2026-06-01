@@ -1,6 +1,6 @@
 const stories = [
   {
-    date: "July, 1, 2026",
+    date: "July 1, 2026",
     title: "Israel Expands Offensive in Lebanon",
 
     levels: {
@@ -37,7 +37,7 @@ const stories = [
   },
 
   {
-    date: "May 26, 2026",
+    date: "July 2, 2026",
     title: "High Gas Prices Push Inflation Higher",
 
     levels: {
@@ -74,7 +74,7 @@ const stories = [
   },
 
   {
-    date: "May 27, 2026",
+    date: "July 3, 2026",
     title: "Experts Warn About Quantum Cybersecurity Risk",
 
     levels: {
