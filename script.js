@@ -114,7 +114,7 @@ const stories = [
 let currentLevel = 1;
 const today = new Date();
 
-const startDate = new Date("2026-07-01");
+const startDate = new Date("2026-06-01");
 
 const diffDays = Math.floor(
   (today - startDate) / (1000 * 60 * 60 * 24)
