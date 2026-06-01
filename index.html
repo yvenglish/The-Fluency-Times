@@ -247,7 +247,7 @@ footer{background:#08031a;border-top:1px solid var(--borderl);padding:1.75rem 1r
       Exemplo: image: "img/cuba-oil.jpg"
    ========================================================== */
 
-const START_DATE = "2026-05-25"; // primeiro dia da primeira notícia da lista
+const START_DATE = "2026-06-01"; // primeiro dia da primeira notícia da lista
 
 const NEWS = [
     {
@@ -385,10 +385,18 @@ function renderNews(){
 
   document.getElementById("ddate").textContent = new Date().toLocaleDateString("en-US", {weekday:"long", year:"numeric", month:"long", day:"numeric"});
   document.getElementById("ahead").textContent = currentNews.title;
-  document.getElementById("abody").innerHTML = levelData.text.map(paragraph => `<p>${paragraph}</p>`).join("");
-  document.getElementById("newsimg").src = currentNews.image;
-  document.getElementById("newsimg").alt = currentNews.title;
-  document.getElementById("newscap").textContent = currentNews.caption || "daily edition";
+  const paragraphs = Array.isArray(levelData.text) ? levelData.text : [levelData.text];
+  document.getElementById("abody").innerHTML = paragraphs.map(paragraph => `<p>${paragraph}</p>`).join("");
+
+  const newsImg = document.getElementById("newsimg");
+  const newsCap = document.getElementById("newscap");
+  if(newsImg){
+    newsImg.src = currentNews.image || "";
+    newsImg.alt = currentNews.title;
+  }
+  if(newsCap){
+    newsCap.textContent = currentNews.caption || "daily edition";
+  }
 
   document.getElementById("q1").textContent = levelData.questions[0];
   document.getElementById("q2").textContent = levelData.questions[1];
