@@ -112,7 +112,19 @@ const stories = [
 ];
 
 let currentLevel = 1;
-let currentStory = stories[0];
+const today = new Date();
+
+const startDate = new Date("2026-07-01");
+
+const diffDays = Math.floor(
+  (today - startDate) / (1000 * 60 * 60 * 24)
+);
+
+const storyIndex =
+  ((diffDays % stories.length) + stories.length)
+  % stories.length;
+
+let currentStory = stories[storyIndex];
 
 const titleEl = document.getElementById("newsTitle");
 const dateEl = document.getElementById("newsDate");
