@@ -77,9 +77,14 @@ body{background:var(--bg);color:var(--white);font-family:"DM Sans",sans-serif;mi
 }
 
 /* ===== NEWS OF THE WEEK MODAL ===== */
-.week-row{display:flex;justify-content:center;margin:1.15rem 0 0}
-.week-btn{background:rgba(255,255,255,.04);color:var(--purxl);border:1px solid var(--border);border-radius:999px;padding:9px 18px;font-family:"DM Sans",sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:.2s}
-.week-btn:hover{background:rgba(144,96,208,.16);border-color:var(--purlt)}
+.week-row{display:flex;justify-content:center;margin:1.55rem 0 .25rem;position:relative}
+.week-callout{display:flex;flex-direction:column;align-items:center;gap:.35rem}
+.week-hint{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--gold);font-size:1rem;line-height:1;letter-spacing:.02em;opacity:.92;transform:rotate(-2deg);animation:weekHintFloat 2.8s ease-in-out infinite}
+.week-hint span{display:inline-block;font-size:1.35rem;margin-right:.25rem;transform:translateY(2px) rotate(8deg)}
+.week-btn{position:relative;background:rgba(255,255,255,.055);color:var(--purxl);border:1px solid rgba(201,145,74,.42);border-radius:999px;padding:10px 20px;font-family:"DM Sans",sans-serif;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:.2s;box-shadow:0 12px 28px rgba(0,0,0,.18),0 0 0 1px rgba(255,255,255,.025) inset}
+.week-btn::after{content:"NEW";position:absolute;top:-9px;right:-9px;background:var(--gold);color:#130923;border-radius:999px;padding:3px 7px;font-size:8px;font-weight:800;letter-spacing:.12em;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.week-btn:hover{background:rgba(144,96,208,.16);border-color:var(--gold);transform:translateY(-1px)}
+@keyframes weekHintFloat{0%,100%{transform:translateX(0) rotate(-2deg)}50%{transform:translateX(-5px) rotate(-2deg)}}
 .week-modal{position:fixed;inset:0;background:rgba(8,3,26,.78);backdrop-filter:blur(10px);z-index:80;display:none;align-items:center;justify-content:center;padding:1.1rem}
 .week-modal.open{display:flex}
 .week-panel{width:min(720px,100%);max-height:86vh;overflow:auto;background:linear-gradient(180deg,var(--bgcard),#160b28);border:1px solid var(--border);border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.45);padding:1.25rem}
@@ -94,7 +99,8 @@ body{background:var(--bg);color:var(--white);font-family:"DM Sans",sans-serif;mi
 .week-date{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:.35rem}
 .week-card-title{font-family:"DM Serif Display",serif;font-size:1.08rem;font-weight:400;line-height:1.15;color:var(--white)}
 .week-card-caption{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:.35rem}
-@media(min-width:640px){.week-grid{grid-template-columns:1fr 1fr}.week-row{justify-content:flex-start}}
+@media(min-width:640px){.week-grid{grid-template-columns:1fr 1fr}.week-row{justify-content:flex-start}.week-callout{align-items:flex-start}}
+@media(max-width:639px){.week-row{margin:1.35rem 0 .15rem}.week-hint{font-size:.95rem}.week-hint span{font-size:1.2rem}.week-btn{width:100%;max-width:280px;padding:12px 18px}.week-panel{max-height:88vh;padding:1rem}.week-card{grid-template-columns:84px 1fr;gap:.75rem}.week-thumb{width:84px;height:62px}.week-head{align-items:flex-start}.week-title{font-size:1.35rem}}
 
 .apholder{background:var(--bglight);border-radius:6px;padding:1.2rem;text-align:center;color:var(--muted);font-size:13px;line-height:1.8}
 .apholder code{background:rgba(255,255,255,.07);padding:2px 7px;border-radius:3px;font-size:12px;color:var(--purxl)}
@@ -170,7 +176,10 @@ footer{background:#08031a;border-top:1px solid var(--borderl);padding:1.75rem 1r
     </div>
 
     <div class="week-row">
-      <button class="week-btn" type="button" id="openWeekNews">News of the Week</button>
+      <div class="week-callout">
+        <div class="week-hint"><span>↙</span>Explore this week's news</div>
+        <button class="week-btn" type="button" id="openWeekNews">News of the Week</button>
+      </div>
     </div>
 
     <div class="story-top">
@@ -550,7 +559,7 @@ document.addEventListener("keydown", (e) => {
 document.querySelectorAll(".lbtn").forEach(btn => {
   btn.addEventListener("click", () => {
     currentLevel = btn.dataset.level;
-    renderNews();
+    renderNews(currentNewsIndex);
   });
 });
 
