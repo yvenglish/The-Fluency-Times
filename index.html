@@ -294,125 +294,87 @@ footer{background:#08031a;border-top:1px solid var(--borderl);padding:1.75rem 1r
       Exemplo: image: "img/cuba-oil.jpg"
    ========================================================== */
 
-const START_DATE = "2026-06-01"; // primeiro dia da primeira notícia da lista
+const START_DATE = "2026-06-16"; // primeiro dia da primeira notícia da lista
 
 const NEWS = [
-    {
-    date: "2026-06-01",
-    image: "https://npr.brightspotcdn.com/dims3/default/strip/false/crop/1600x1200+0+0/resize/1100/quality/50/format/jpeg/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2Faa%2Fec%2F7faf878f427c8d329d4818ef9dfc%2Fbeaufort-1-whatsapp-image-2026-05-30-at-22-48-14-1.jpg",
-    caption: "global politics",
-    title: "Israel Expands Offensive in Lebanon",
+   {
+  date: "June 16, 2026",
+  image: "https://static.time.com/v3/assets/bltea6093859af6183b/bltc82bbbb506af490a/69b0c166eb760aa2626a0de7/Anthropic_Lead-v2.jpg?branch=production&width=3840&quality=75&auto=webp&crop=3:2",
+  caption: "Technology and politics",
+  title: "Anthropic Pauses Release of Powerful AI Tool",
 
-    levels: {
-      1: {
-        text: "Israel has captured Beaufort Castle in southern Lebanon. The castle is an important place because it is high above the Litani valley. Israeli leaders say this is an important moment in the conflict with Hezbollah. Many countries are worried because more people are leaving their homes in southern Lebanon.",
+  levels: {
+    1: {
+      text: "AI company Anthropic stopped public access to its new AI tool called Fable 5. The company said the tool is very powerful and may have some risks. The US government also asked Anthropic not to allow foreign users to access the technology. Company leaders will meet with government officials to discuss the situation.",
 
-        questions: [
-          "What place did Israel capture?",
-          "Why is Beaufort Castle important?",
-          "Why are many countries worried?"
-        ]
-      },
+      questions: [
+        "What is the name of the AI tool?",
+        "Why did Anthropic stop public access?",
+        "Who will the company meet with?"
+      ]
+    },
 
-      2: {
-        text: "The Israeli military has captured Beaufort Castle in southern Lebanon as it expands its ground offensive against Hezbollah. The site is both strategic and symbolic because it overlooks the Litani valley and has played an important role in past conflicts. Israel says the operation is meant to weaken Hezbollah and protect communities near the border. However, Lebanon’s prime minister accused Israel of collective punishment, while the UK, France, and Germany criticized the escalation and called for diplomacy.",
+    2: {
+      text: "Anthropic has temporarily blocked public access to its latest AI model, Fable 5, after concerns were raised by the US government. Officials believe the system may have a security weakness that could allow users to bypass some of its safeguards. The government also prohibited Anthropic from giving foreign nationals access to the technology. Company executives are expected to meet with US officials to discuss the issue and decide what happens next.",
 
-        questions: [
-          "Why is Beaufort Castle important?",
-          "What does Israel say the operation is meant to do?",
-          "How did other countries react to the escalation?"
-        ]
-      },
+      questions: [
+        "Why did Anthropic block access to Fable 5?",
+        "What concerns does the US government have?",
+        "What will be discussed in the upcoming meeting?"
+      ]
+    },
 
-      3: {
-        text: "Israel’s capture of Beaufort Castle marks a significant expansion of its ground offensive in southern Lebanon. The site carries both strategic and historical weight, as it overlooks the Litani valley and was also captured by Israeli forces during the First Lebanon War. Prime Minister Benjamin Netanyahu described the operation as a decisive shift in Israel’s policy toward Hezbollah. International criticism has intensified, with the UK, France, and Germany warning that further escalation could deepen civilian displacement and reduce chances for diplomacy. Lebanon’s government accused Israel of collective punishment as evacuation orders expanded across the south.",
+    3: {
+      text: "Anthropic is facing increased scrutiny from the US government after releasing Fable 5, a public version of its advanced AI system. Shortly after launch, officials raised concerns about a possible 'jailbreak' vulnerability that could allow the model to perform actions beyond its intended restrictions. In response, Anthropic suspended public access to the tool and agreed to meet with senior government officials. The case highlights growing tensions between rapid AI development, national security concerns, and the challenge of regulating increasingly powerful artificial intelligence systems.",
 
-        questions: [
-          "Why is the capture of Beaufort Castle strategically and symbolically important?",
-          "How has the international community responded to Israel’s offensive?",
-          "What are the possible humanitarian consequences of the escalation?"
-        ]
-      }
-    }
-  },
-
-  {
-    date: "June 2, 2026",
-    image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8n7u--BDJiZtrgvxZd2YwB_8Edk7GiP7_HA&s",
-    caption:"global politics",
-    title: "High Gas Prices Push Inflation Higher",
-
-    levels: {
-      1: {
-        text: "Gas prices went up again because of the war with Iran. This made inflation higher in the United States. Many families are spending more money and saving less. A new report says Americans are saving at the lowest rate in almost four years.",
-
-        questions: [
-          "What made inflation higher?",
-          "Are Americans saving more or less money?",
-          "Why are families feeling financial pressure?"
-        ]
-      },
-
-      2: {
-        text: "Higher gas prices pushed inflation up again in the United States last month. The Federal Reserve’s preferred inflation measure rose to 3.8% in April. Consumer spending still increased, but when inflation is included, spending grew only slightly. The report also showed that Americans are saving less, with the personal saving rate falling to 2.6%, the lowest level since 2022. Economists warn that many households are struggling to keep up with rising costs.",
-
-        questions: [
-          "How did gas prices affect inflation?",
-          "What happened to Americans’ personal saving rate?",
-          "Why are economists worried about household finances?"
-        ]
-      },
-
-      3: {
-        text: "A new economic report showed that rising gas prices, driven by the Iran war’s oil shock, pushed inflation higher in April. The Personal Consumption Expenditures price index rose to 3.8%, while consumer spending slowed after adjusting for inflation. Although Americans continued to spend, the data revealed growing financial strain. Disposable income fell, inflation-adjusted income dropped more sharply, and the personal saving rate declined to 2.6%, its lowest level in nearly four years. Economists warn that this pattern may be unsustainable, especially for lower-income and middle-class households.",
-
-        questions: [
-          "How did the oil price shock influence inflation in April?",
-          "What signs show that American households are under financial pressure?",
-          "Why might this spending pattern be unsustainable?"
-        ]
-      }
-    }
-  },
-
-  {
-    date: "June 3, 2026",
-    image:"https://www.popsci.com/wp-content/uploads/2023/04/06/google-sycamore-quantum-computer-processor.jpg?quality=85&w=2000",
-    caption: "technology",
-    title: "Experts Warn About Quantum Cybersecurity Risk",
-
-    levels: {
-      1: {
-        text: "Experts are worried about a future problem called Q-Day. This is the day when quantum computers may be strong enough to break online security codes. These codes protect emails, bank information, medical files, and many other things. Google says this could happen by 2029, so companies and governments need to prepare.",
-
-        questions: [
-          "What is Q-Day?",
-          "What information could be at risk?",
-          "Why do companies and governments need to prepare?"
-        ]
-      },
-
-      2: {
-        text: "Cybersecurity experts are warning about Q-Day, the future moment when quantum computers may be able to break many of today’s encryption systems. Encryption protects online banking, emails, medical records, and private data. Google recently said this risk could become real by 2029, which gives companies and governments less time to prepare. Some attackers may already be collecting encrypted information now, hoping to decrypt it later when quantum computers become powerful enough.",
-
-        questions: [
-          "What does Q-Day mean?",
-          "Why is encryption important for internet security?",
-          "What is a “harvest now, decrypt later” attack?"
-        ]
-      },
-
-      3: {
-        text: "Cybersecurity specialists are increasingly concerned about Q-Day, the point at which quantum computers become powerful and stable enough to break conventional encryption. This could expose financial transactions, medical records, emails, location data, and crypto wallets protected by today’s algorithms. Google has warned that some encrypted systems may be vulnerable by 2029, accelerating the timeline for governments and companies to adopt post-quantum cryptography. Experts also warn that adversaries may already be stealing encrypted data and storing it for future decryption, a strategy known as “harvest now, decrypt later.”",
-
-        questions: [
-          "Why does Q-Day represent a major cybersecurity threat?",
-          "How could quantum computing affect today’s encryption systems?",
-          "Why is the “harvest now, decrypt later” strategy dangerous?"
-        ]
-      }
+      questions: [
+        "What is a jailbreak vulnerability in the context of AI?",
+        "Why has the US government become concerned about Fable 5?",
+        "How does this situation illustrate the challenges of AI regulation?"
+      ]
     }
   }
+}
+
+{
+  date: "June 17, 2026",
+  image: "https://fashionunited.com/img/upload/2025/03/21/ss26-mobile-oyolnvc2-2025-03-21.png",
+  caption: "Fashion Report | Vogue",
+  title: "Vogue Predicts This Summer's Biggest Fashion Trends",
+
+  levels: {
+    1: {
+      text: "Fashion magazine Vogue shared its predictions for this summer's biggest trends. Some styles may become very popular, including colorful clothes, large bags, fringe details, platform shoes, and flip-flops with unusual designs. Vogue believes people will experiment more with fashion this season.",
+
+      questions: [
+        "Which magazine made these predictions?",
+        "What kinds of clothes may become popular?",
+        "Do you like to follow fashion trends?"
+      ]
+    },
+
+    2: {
+      text: "According to Vogue, this summer could bring several unexpected fashion trends. Editors predict a return of bold colors, oversized bags, platform shoes, and statement accessories. Fringe details and creative flip-flop designs may also become more common. The magazine believes people will embrace fun and expressive styles during the warmer months.",
+
+      questions: [
+        "Which trends does Vogue expect to see this summer?",
+        "Why might people choose more colorful styles?",
+        "Which trend from the article do you like the most?"
+      ]
+    },
+
+    3: {
+      text: "Fashion editors at Vogue have identified several unexpected trends that may dominate this summer. Among their predictions are oversized handbags, dramatic platform heels, neon colors, modern fringe details, and unconventional flip-flop designs. The magazine suggests that consumers are moving toward bolder and more expressive fashion choices as summer approaches. According to Vogue, these trends reflect a desire for individuality, creativity, and a sense of playfulness in personal style.",
+
+      questions: [
+        "Why does Vogue believe these trends will become popular?",
+        "What do these fashion choices reveal about consumer behavior?",
+        "Do fashion trends influence your purchasing decisions? Why or why not?"
+      ]
+    }
+  }
+},
+ 
 ];
 
 let currentLevel = "1";
