@@ -102,6 +102,14 @@ body{background:var(--bg);color:var(--white);font-family:"DM Sans",sans-serif;mi
 @media(min-width:640px){.week-grid{grid-template-columns:1fr 1fr}.week-row{justify-content:flex-start}.week-callout{align-items:flex-start}}
 @media(max-width:639px){.week-row{margin:1.35rem 0 .15rem}.week-hint{font-size:.95rem}.week-hint span{font-size:1.2rem}.week-btn{width:100%;max-width:280px;padding:12px 18px}.week-panel{max-height:88vh;padding:1rem}.week-card{grid-template-columns:84px 1fr;gap:.75rem}.week-thumb{width:84px;height:62px}.week-head{align-items:flex-start}.week-title{font-size:1.35rem}}
 
+
+.vocab-box{margin:1.25rem 0 0;background:var(--bgcard);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem}
+.vocab-list{display:grid;grid-template-columns:1fr;gap:.55rem}
+.vocab-item{display:grid;grid-template-columns:1fr;gap:.15rem;padding:.65rem .75rem;background:rgba(255,255,255,.03);border:1px solid var(--borderl);border-radius:8px}
+.vocab-term{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--purxl)}
+.vocab-meaning{font-family:"Cormorant Garamond",serif;font-size:1.05rem;color:var(--muted);line-height:1.35}
+@media(min-width:560px){.vocab-list{grid-template-columns:1fr 1fr}}
+
 .apholder{background:var(--bglight);border-radius:6px;padding:1.2rem;text-align:center;color:var(--muted);font-size:13px;line-height:1.8}
 .apholder code{background:rgba(255,255,255,.07);padding:2px 7px;border-radius:3px;font-size:12px;color:var(--purxl)}
 .qsec{padding:0 0 3rem}
@@ -193,6 +201,12 @@ footer{background:#08031a;border-top:1px solid var(--borderl);padding:1.75rem 1r
         <figcaption class="news-caption" id="newscap">daily edition</figcaption>
       </figure>
     </div>
+
+    <div class="vocab-box" id="vocabBox">
+      <p class="alabel">Key Vocabulary</p>
+      <div class="vocab-list" id="vocabList"></div>
+    </div>
+
   </section>
 
   <div class="div"><span>✦ ✦ ✦</span></div>
@@ -297,84 +311,165 @@ footer{background:#08031a;border-top:1px solid var(--borderl);padding:1.75rem 1r
 const START_DATE = "2026-06-16"; // primeiro dia da primeira notícia da lista
 
 const NEWS = [
-   {
-  date: "June 16, 2026",
-  image: "https://static.time.com/v3/assets/bltea6093859af6183b/bltc82bbbb506af490a/69b0c166eb760aa2626a0de7/Anthropic_Lead-v2.jpg?branch=production&width=3840&quality=75&auto=webp&crop=3:2",
-  caption: "Technology and politics",
-  title: "Anthropic Pauses Release of Powerful AI Tool",
-
-  levels: {
-    1: {
-      text: "AI company Anthropic stopped public access to its new AI tool called Fable 5. The company said the tool is very powerful and may have some risks. The US government also asked Anthropic not to allow foreign users to access the technology. Company leaders will meet with government officials to discuss the situation.",
-
-      questions: [
-        "What is the name of the AI tool?",
-        "Why did Anthropic stop public access?",
-        "Who will the company meet with?"
-      ]
-    },
-
-    2: {
-      text: "Anthropic has temporarily blocked public access to its latest AI model, Fable 5, after concerns were raised by the US government. Officials believe the system may have a security weakness that could allow users to bypass some of its safeguards. The government also prohibited Anthropic from giving foreign nationals access to the technology. Company executives are expected to meet with US officials to discuss the issue and decide what happens next.",
-
-      questions: [
-        "Why did Anthropic block access to Fable 5?",
-        "What concerns does the US government have?",
-        "What will be discussed in the upcoming meeting?"
-      ]
-    },
-
-    3: {
-      text: "Anthropic is facing increased scrutiny from the US government after releasing Fable 5, a public version of its advanced AI system. Shortly after launch, officials raised concerns about a possible 'jailbreak' vulnerability that could allow the model to perform actions beyond its intended restrictions. In response, Anthropic suspended public access to the tool and agreed to meet with senior government officials. The case highlights growing tensions between rapid AI development, national security concerns, and the challenge of regulating increasingly powerful artificial intelligence systems.",
-
-      questions: [
-        "What is a jailbreak vulnerability in the context of AI?",
-        "Why has the US government become concerned about Fable 5?",
-        "How does this situation illustrate the challenges of AI regulation?"
-      ]
+  {
+    date: "June 16, 2026",
+    image: "https://static.time.com/v3/assets/bltea6093859af6183b/bltc82bbbb506af490a/69b0c166eb760aa2626a0de7/Anthropic_Lead-v2.jpg?branch=production&width=3840&quality=75&auto=webp&crop=3:2",
+    caption: "Technology and politics",
+    title: "Anthropic Pauses Release of Powerful AI Tool",
+    levels: {
+      1: {
+        text: "AI company Anthropic stopped public access to its new AI tool called Fable 5. The company said the tool is very powerful and may have some risks. The US government also asked Anthropic not to allow foreign users to access the technology. Company leaders will meet with government officials to discuss the situation.",
+        vocabulary: [
+          {term: "tool", meaning: "uma ferramenta"},
+          {term: "powerful", meaning: "muito forte; poderoso"},
+          {term: "risks", meaning: "riscos"},
+          {term: "foreign users", meaning: "usuários estrangeiros"},
+          {term: "officials", meaning: "autoridades"}
+        ],
+        questions: [
+          "What is the name of the AI tool?",
+          "Why did Anthropic stop public access?",
+          "Who will the company meet with?"
+        ]
+      },
+      2: {
+        text: "Anthropic has temporarily blocked public access to its latest AI model, Fable 5, after concerns were raised by the US government. Officials believe the system may have a security weakness that could allow users to bypass some of its safeguards. The government also prohibited Anthropic from giving foreign nationals access to the technology. Company executives are expected to meet with US officials to discuss the issue and decide what happens next.",
+        vocabulary: [
+          {term: "temporarily", meaning: "temporariamente"},
+          {term: "concerns", meaning: "preocupações"},
+          {term: "security weakness", meaning: "falha de segurança"},
+          {term: "bypass", meaning: "passar por cima; contornar"},
+          {term: "safeguards", meaning: "proteções; medidas de segurança"}
+        ],
+        questions: [
+          "Why did Anthropic block access to Fable 5?",
+          "What concerns does the US government have?",
+          "What will be discussed in the upcoming meeting?"
+        ]
+      },
+      3: {
+        text: "Anthropic is facing increased scrutiny from the US government after releasing Fable 5, a public version of its advanced AI system. Shortly after launch, officials raised concerns about a possible 'jailbreak' vulnerability that could allow the model to perform actions beyond its intended restrictions. In response, Anthropic suspended public access to the tool and agreed to meet with senior government officials. The case highlights growing tensions between rapid AI development, national security concerns, and the challenge of regulating increasingly powerful artificial intelligence systems.",
+        vocabulary: [
+          {term: "scrutiny", meaning: "análise rigorosa; investigação"},
+          {term: "jailbreak vulnerability", meaning: "falha que permite burlar restrições"},
+          {term: "intended restrictions", meaning: "limites planejados"},
+          {term: "suspended", meaning: "suspendeu"},
+          {term: "regulating", meaning: "regular; criar regras para"}
+        ],
+        questions: [
+          "What is a jailbreak vulnerability in the context of AI?",
+          "Why has the US government become concerned about Fable 5?",
+          "How does this situation illustrate the challenges of AI regulation?"
+        ]
+      }
+    }
+  },
+  {
+    date: "June 17, 2026",
+    image: "https://fashionunited.com/img/upload/2025/03/21/ss26-mobile-oyolnvc2-2025-03-21.png",
+    caption: "Fashion Report | Vogue",
+    title: "Vogue Predicts This Summer's Biggest Fashion Trends",
+    levels: {
+      1: {
+        text: "Fashion magazine Vogue shared its predictions for this summer's biggest trends. Some styles may become very popular, including colorful clothes, large bags, fringe details, platform shoes, and flip-flops with unusual designs. Vogue believes people will experiment more with fashion this season.",
+        vocabulary: [
+          {term: "predictions", meaning: "previsões"},
+          {term: "trends", meaning: "tendências"},
+          {term: "colorful", meaning: "colorido"},
+          {term: "large bags", meaning: "bolsas grandes"},
+          {term: "season", meaning: "temporada; estação"}
+        ],
+        questions: [
+          "Which magazine made these predictions?",
+          "What kinds of clothes may become popular?",
+          "Do you like to follow fashion trends?"
+        ]
+      },
+      2: {
+        text: "According to Vogue, this summer could bring several unexpected fashion trends. Editors predict a return of bold colors, oversized bags, platform shoes, and statement accessories. Fringe details and creative flip-flop designs may also become more common. The magazine believes people will embrace fun and expressive styles during the warmer months.",
+        vocabulary: [
+          {term: "unexpected", meaning: "inesperado"},
+          {term: "bold colors", meaning: "cores fortes; cores chamativas"},
+          {term: "oversized", meaning: "maior que o normal"},
+          {term: "statement accessories", meaning: "acessórios marcantes"},
+          {term: "embrace", meaning: "adotar; aceitar"}
+        ],
+        questions: [
+          "Which trends does Vogue expect to see this summer?",
+          "Why might people choose more colorful styles?",
+          "Which trend from the article do you like the most?"
+        ]
+      },
+      3: {
+        text: "Fashion editors at Vogue have identified several unexpected trends that may dominate this summer. Among their predictions are oversized handbags, dramatic platform heels, neon colors, modern fringe details, and unconventional flip-flop designs. The magazine suggests that consumers are moving toward bolder and more expressive fashion choices as summer approaches. According to Vogue, these trends reflect a desire for individuality, creativity, and a sense of playfulness in personal style.",
+        vocabulary: [
+          {term: "identified", meaning: "identificaram"},
+          {term: "dominate", meaning: "dominar; aparecer muito"},
+          {term: "unconventional", meaning: "fora do comum"},
+          {term: "consumers", meaning: "consumidores"},
+          {term: "playfulness", meaning: "leveza; diversão; toque brincalhão"}
+        ],
+        questions: [
+          "Why does Vogue believe these trends will become popular?",
+          "What do these fashion choices reveal about consumer behavior?",
+          "Do fashion trends influence your purchasing decisions? Why or why not?"
+        ]
+      }
+    }
+  },
+  {
+    date: "June 18, 2026",
+    image: "https://s.yimg.com/ny/api/res/1.2/ktDOCUx3nr7Qaxa7Ft83Jg--/YXBwaWQ9aGlnaGxhbmRlcjt3PTI0MDA7aD0xMzUwO2NmPXdlYnA-/https://media.zenfs.com/en/cinemablend_388/1b18a6ad1a6f161f6ca3cf07751b2030",
+    caption: "Business and media | Variety",
+    title: "DOJ Clears Paramount-Warner Bros. Discovery Deal",
+    levels: {
+      1: {
+        text: "The US Justice Department closed its antitrust investigation into Paramount's plan to buy Warner Bros. Discovery. Some lawyers at the department reportedly wanted to recommend a lawsuit to block the deal. But senior officials approved the merger without asking for divestitures. Some politicians are now asking if politics influenced the decision.",
+        vocabulary: [
+          {term: "Justice Department", meaning: "Departamento de Justiça dos EUA"},
+          {term: "antitrust", meaning: "relacionado a leis contra monopólios"},
+          {term: "lawsuit", meaning: "processo judicial"},
+          {term: "block the deal", meaning: "impedir o acordo"},
+          {term: "merger", meaning: "fusão de empresas"}
+        ],
+        questions: [
+          "Which deal did the Justice Department approve?",
+          "What did some lawyers reportedly want to do?",
+          "Why are some politicians asking questions?"
+        ]
+      },
+      2: {
+        text: "The US Justice Department has cleared Paramount's proposed takeover of Warner Bros. Discovery, even though some career antitrust lawyers were reportedly leaning toward recommending a lawsuit to stop it. According to Variety, the department closed the investigation without requiring divestitures or other concessions. Critics, including Senator Elizabeth Warren, questioned whether political relationships played a role in the decision. The deal may still face legal challenges from state attorneys general and reviews from regulators in Europe and the UK.",
+        vocabulary: [
+          {term: "takeover", meaning: "aquisição; compra de uma empresa"},
+          {term: "career lawyers", meaning: "advogados de carreira"},
+          {term: "leaning toward", meaning: "inclinados a; tendendo a"},
+          {term: "divestitures", meaning: "venda obrigatória de partes da empresa"},
+          {term: "regulators", meaning: "órgãos reguladores"}
+        ],
+        questions: [
+          "Why was the DOJ decision controversial?",
+          "What did the DOJ not require from Paramount?",
+          "What other obstacles could the merger still face?"
+        ]
+      },
+      3: {
+        text: "The Justice Department's decision to clear Paramount's $111 billion takeover of Warner Bros. Discovery has drawn scrutiny after reports that career attorneys in the Antitrust Division had been inclined to recommend a lawsuit challenging the merger. Variety reported that senior DOJ officials closed the investigation without imposing divestitures or concessions, while critics questioned whether political ties involving the Ellison family and Donald Trump influenced the outcome. Although federal approval removes one major obstacle, the transaction could still face state-level litigation and regulatory reviews in the European Union and the United Kingdom.",
+        vocabulary: [
+          {term: "drawn scrutiny", meaning: "atraiu investigação ou atenção crítica"},
+          {term: "Antitrust Division", meaning: "divisão que analisa concorrência e monopólios"},
+          {term: "imposing", meaning: "impondo; exigindo"},
+          {term: "political ties", meaning: "laços políticos"},
+          {term: "state-level litigation", meaning: "processos movidos por estados"}
+        ],
+        questions: [
+          "Why might antitrust lawyers have wanted to challenge the merger?",
+          "How could political connections affect public perception of the decision?",
+          "Why is federal approval not the final step for this deal?"
+        ]
+      }
     }
   }
-}
-
-{
-  date: "June 17, 2026",
-  image: "https://fashionunited.com/img/upload/2025/03/21/ss26-mobile-oyolnvc2-2025-03-21.png",
-  caption: "Fashion Report | Vogue",
-  title: "Vogue Predicts This Summer's Biggest Fashion Trends",
-
-  levels: {
-    1: {
-      text: "Fashion magazine Vogue shared its predictions for this summer's biggest trends. Some styles may become very popular, including colorful clothes, large bags, fringe details, platform shoes, and flip-flops with unusual designs. Vogue believes people will experiment more with fashion this season.",
-
-      questions: [
-        "Which magazine made these predictions?",
-        "What kinds of clothes may become popular?",
-        "Do you like to follow fashion trends?"
-      ]
-    },
-
-    2: {
-      text: "According to Vogue, this summer could bring several unexpected fashion trends. Editors predict a return of bold colors, oversized bags, platform shoes, and statement accessories. Fringe details and creative flip-flop designs may also become more common. The magazine believes people will embrace fun and expressive styles during the warmer months.",
-
-      questions: [
-        "Which trends does Vogue expect to see this summer?",
-        "Why might people choose more colorful styles?",
-        "Which trend from the article do you like the most?"
-      ]
-    },
-
-    3: {
-      text: "Fashion editors at Vogue have identified several unexpected trends that may dominate this summer. Among their predictions are oversized handbags, dramatic platform heels, neon colors, modern fringe details, and unconventional flip-flop designs. The magazine suggests that consumers are moving toward bolder and more expressive fashion choices as summer approaches. According to Vogue, these trends reflect a desire for individuality, creativity, and a sense of playfulness in personal style.",
-
-      questions: [
-        "Why does Vogue believe these trends will become popular?",
-        "What do these fashion choices reveal about consumer behavior?",
-        "Do fashion trends influence your purchasing decisions? Why or why not?"
-      ]
-    }
-  }
-},
- 
 ];
 
 let currentLevel = "1";
@@ -401,6 +496,17 @@ function renderNews(index = null){
   document.getElementById("ahead").textContent = currentNews.title;
   const paragraphs = Array.isArray(levelData.text) ? levelData.text : [levelData.text];
   document.getElementById("abody").innerHTML = paragraphs.map(paragraph => `<p>${paragraph}</p>`).join("");
+
+  const vocabList = document.getElementById("vocabList");
+  const vocabulary = Array.isArray(levelData.vocabulary) ? levelData.vocabulary : [];
+  if(vocabList){
+    vocabList.innerHTML = vocabulary.map(item => `
+      <div class="vocab-item">
+        <span class="vocab-term">${item.term}</span>
+        <span class="vocab-meaning">${item.meaning}</span>
+      </div>
+    `).join("");
+  }
 
   const newsImg = document.getElementById("newsimg");
   const newsCap = document.getElementById("newscap");
