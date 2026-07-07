@@ -26,6 +26,8 @@ function Admin() {
   const [formData, setFormData] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
+  
+  const [articleToDelete, setArticleToDelete] = useState(null);
 
   // Fetch articles for the list view
   const fetchArticles = async () => {
@@ -51,15 +53,15 @@ function Admin() {
     }
   }, [view]);
 
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this article?')) {
-      try {
-        await deleteDoc(doc(db, 'articles', id));
-        fetchArticles(); // Refresh list
-      } catch (error) {
-        console.error("Error deleting article", error);
-        alert('Error deleting article: ' + error.message);
-      }
+  const confirmDelete = async () => {
+    if (!articleToDelete) return;
+    try {
+      await deleteDoc(doc(db, 'articles', articleToDelete.id));
+      setArticleToDelete(null);
+      fetchArticles(); // Refresh list
+    } catch (error) {
+      console.error("Error deleting article", error);
+      alert('Error deleting article: ' + error.message);
     }
   };
 
@@ -195,7 +197,7 @@ function Admin() {
                   </div>
                   <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                     <button className="btn btn-outline" onClick={() => handleEditClick(article)}>Edit</button>
-                    <button className="btn btn-outline" style={{ borderColor: '#ef4444', color: '#ef4444' }} onClick={() => handleDelete(article.id)}>Delete</button>
+                    <button className="btn btn-outline" style={{ borderColor: '#ef4444', color: '#ef4444' }} onClick={() => setArticleToDelete(article)}>Delete</button>
                   </div>
                 </div>
               ))}
@@ -312,6 +314,20 @@ function Admin() {
               {saving ? 'Saving...' : (editingId ? 'Update Article' : 'Publish Article')}
             </button>
           </form>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {articleToDelete && (
+        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
+          <div style={{ background: '#fff', padding: '2rem', borderRadius: '8px', maxWidth: '400px', width: '90%', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+            <h3 style={{ marginTop: 0, color: '#ef4444', fontFamily: '"DM Serif Display", serif', fontWeight: '400' }}>Confirm Deletion</h3>
+            <p style={{ margin: '1rem 0' }}>Are you sure you want to delete <strong>{articleToDelete.title}</strong>? This action cannot be undone.</p>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '2rem' }}>
+              <button className="btn btn-outline" onClick={() => setArticleToDelete(null)}>Cancel</button>
+              <button className="btn" style={{ background: '#ef4444', color: '#fff', border: 'none', boxShadow: '0 4px 10px rgba(239,68,68,0.2)' }} onClick={confirmDelete}>Delete</button>
+            </div>
+          </div>
         </div>
       )}
     </div>
