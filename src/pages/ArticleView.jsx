@@ -38,12 +38,17 @@ function ArticleView() {
   const prevImg = () => setCurrentImgIndex(prev => (prev - 1 + images.length) % images.length);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    
     async function fetchArticle() {
+      setLoading(true);
       try {
         const docRef = doc(db, 'articles', id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           setArticle({ id: docSnap.id, ...docSnap.data() });
+        } else {
+          setArticle(null);
         }
       } catch (error) {
         console.error(error);
