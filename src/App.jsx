@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import Admin from './pages/Admin';
@@ -30,8 +31,31 @@ function Header() {
 }
 
 function App() {
+  const [showSplash, setShowSplash] = useState(true);
+  const [fadeSplash, setFadeSplash] = useState(false);
+
+  useEffect(() => {
+    const fadeTimer = setTimeout(() => {
+      setFadeSplash(true);
+    }, 3200);
+
+    const removeTimer = setTimeout(() => {
+      setShowSplash(false);
+    }, 4000);
+
+    return () => {
+      clearTimeout(fadeTimer);
+      clearTimeout(removeTimer);
+    };
+  }, []);
+
   return (
     <Router>
+      {showSplash && (
+        <div className={`splash-screen ${fadeSplash ? 'fade-out' : ''}`}>
+          <img src="/logocircular_transparente.png" alt="YV English" className="splash-logo" />
+        </div>
+      )}
       <Header />
       <main className="container">
         <Routes>
