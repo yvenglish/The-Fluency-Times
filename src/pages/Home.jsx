@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { collection, query, orderBy, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { Link, useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 function Home() {
   const [articles, setArticles] = useState([]);
@@ -43,6 +44,9 @@ function Home() {
 
   return (
     <div>
+      <Helmet>
+        <title>{tagFilter ? `News about ${tagFilter} | The Fluency Times` : 'Latest News | The Fluency Times'}</title>
+      </Helmet>
       {tagFilter && <h2 className="serif-title" style={{marginBottom: '2rem'}}>Showing news for: <span style={{color: 'var(--pur)'}}>{tagFilter}</span></h2>}
       
       {articles.length === 0 ? (

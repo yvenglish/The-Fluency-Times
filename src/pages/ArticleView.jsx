@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useParams, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 function ArticleView() {
   const { id } = useParams();
@@ -122,6 +123,12 @@ function ArticleView() {
 
   return (
     <div style={{ paddingBottom: '4rem' }}>
+      <Helmet>
+        <title>{article.title} | The Fluency Times</title>
+        <meta name="description" content={levelData?.text?.substring(0, 160) + '...'} />
+        {images.length > 0 && <meta property="og:image" content={images[0]} />}
+      </Helmet>
+
       <Link to="/" style={{ color: 'var(--pur)', textDecoration: 'none', fontWeight: 600, display: 'inline-block', marginBottom: '1.5rem' }}>← Back to News</Link>
       
       <div className="article-meta">
