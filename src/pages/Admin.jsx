@@ -74,7 +74,7 @@ function Admin() {
       date: article.date || new Date().toISOString().split('T')[0],
       publishDate: article.publishDate ? (article.publishDate.length > 16 ? new Date(article.publishDate).toISOString().slice(0,16) : article.publishDate.slice(0,16)) : new Date().toISOString().slice(0,16),
       imageUrls: (article.imageUrls && article.imageUrls.length > 0) ? article.imageUrls : (article.imageUrl ? [article.imageUrl] : ['']),
-      tags: article.tags ? article.tags.join(', ') : '',
+      tags: (article.tags && article.tags.length > 0) ? article.tags[0] : '',
       levels: {
         1: { text: '', questions: [], vocabulary: [], ...article.levels?.[1] },
         2: { text: '', questions: [], vocabulary: [], ...article.levels?.[2] },
@@ -269,8 +269,14 @@ function Admin() {
             </div>
 
             <div className="form-group">
-              <label className="form-label">Tags (comma separated)</label>
-              <input className="form-control" placeholder="e.g. politics, economy" value={formData.tags} onChange={e => setFormData({...formData, tags: e.target.value})} />
+              <label className="form-label">Category</label>
+              <select className="form-control" value={formData.tags} onChange={e => setFormData({...formData, tags: e.target.value})}>
+                <option value="">-- Select a Category --</option>
+                <option value="Politics">Politics</option>
+                <option value="Economy">Economy</option>
+                <option value="Technology">Technology</option>
+                <option value="Pop & Art">Pop & Art</option>
+              </select>
             </div>
 
             {[1, 2, 3].map(level => (
