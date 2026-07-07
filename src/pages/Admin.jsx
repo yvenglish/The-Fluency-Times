@@ -5,9 +5,11 @@ import { db } from '../firebase';
 function Admin() {
   const [formData, setFormData] = useState({
     title: '',
+    source: '',
+    sourceLink: '',
     date: new Date().toISOString().split('T')[0],
     publishDate: new Date().toISOString().slice(0,16),
-    imageUrl: '',
+    imageUrls: [''],
     tags: '',
     levels: {
       1: { text: '', questions: [], vocabulary: [] },
@@ -97,12 +99,13 @@ function Admin() {
       const payload = {
         ...formData,
         tags: formData.tags.split(',').map(t => t.trim()).filter(t=>t),
-        publishDate: new Date(formData.publishDate).toISOString()
+        publishDate: new Date(formData.publishDate).toISOString(),
+        imageUrls: formData.imageUrls.filter(url => url.trim() !== '')
       };
       await addDoc(collection(db, 'articles'), payload);
       setMessage('Article successfully added!');
       // Reset mostly
-      setFormData(prev => ({ ...prev, title: '', imageUrl: '', tags: '', levels: { 1: { text: '', questions: [], vocabulary: [] }, 2: { text: '', questions: [], vocabulary: [] }, 3: { text: '', questions: [], vocabulary: [] } } }));
+      setFormData(prev => ({ ...prev, title: '', source: '', sourceLink: '', imageUrls: [''], tags: '', levels: { 1: { text: '', questions: [], vocabulary: [] }, 2: { text: '', questions: [], vocabulary: [] }, 3: { text: '', questions: [], vocabulary: [] } } }));
     } catch (error) {
       console.error(error);
       setMessage('Error adding article: ' + error.message);
@@ -121,6 +124,17 @@ function Admin() {
           <label className="form-label">Title</label>
           <input className="form-control" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} required />
         </div>
+
+        <div className="admin-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+          <div className="form-group">
+            <label className="form-label">Source Name</label>
+            <input className="form-control" placeholder="e.g. The New York Times" value={formData.source} onChange={e => setFormData({...formData, source: e.target.value})} />
+          </div>
+          <div className="form-group">
+            <label className="form-label">Source Link (URL)</label>
+            <input type="url" className="form-control" placeholder="https://..." value={formData.sourceLink} onChange={e => setFormData({...formData, sourceLink: e.target.value})} />
+          </div>
+        </div>
         
         <div className="admin-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
           <div className="form-group">
@@ -134,8 +148,24 @@ function Admin() {
         </div>
 
         <div className="form-group">
-          <label className="form-label">Image URL</label>
-          <input className="form-control" value={formData.imageUrl} onChange={e => setFormData({...formData, imageUrl: e.target.value})} />
+          <label className="form-label">Image URLs</label>
+          {formData.imageUrls.map((url, idx) => (
+            <div key={idx} style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+              <input 
+                className="form-control" 
+                placeholder="Image URL" 
+                value={url} 
+                onChange={e => {
+                  const newUrls = [...formData.imageUrls];
+                  newUrls[idx] = e.target.value;
+                  setFormData({...formData, imageUrls: newUrls});
+                }} 
+              />
+              {idx === formData.imageUrls.length - 1 && (
+                <button type="button" className="btn btn-outline" onClick={() => setFormData({...formData, imageUrls: [...formData.imageUrls, '']})}>+</button>
+              )}
+            </div>
+          ))}
         </div>
 
         <div className="form-group">

@@ -52,9 +52,9 @@ function Home() {
           {articles.map(article => (
             <Link to={`/article/${article.id}`} key={article.id} style={{textDecoration: 'none'}}>
               <div className="news-card">
-                {article.imageUrl && (
+                {((article.imageUrls && article.imageUrls.length > 0) ? article.imageUrls[0] : article.imageUrl) && (
                   <div className="news-visual">
-                    <img src={article.imageUrl} alt={article.title} className="news-visual-img" />
+                    <img src={(article.imageUrls && article.imageUrls.length > 0) ? article.imageUrls[0] : article.imageUrl} alt={article.title} className="news-visual-img" />
                   </div>
                 )}
                 <div className="article-meta">

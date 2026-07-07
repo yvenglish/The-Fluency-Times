@@ -18,6 +18,23 @@ function ArticleView() {
   const utteranceRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  
+  const [currentImgIndex, setCurrentImgIndex] = useState(0);
+
+  // Collect images
+  const images = [];
+  if (article) {
+    if (article.imageUrls && article.imageUrls.length > 0) {
+      article.imageUrls.forEach(url => {
+        if (!images.includes(url)) images.push(url);
+      });
+    } else if (article.imageUrl) {
+      images.push(article.imageUrl);
+    }
+  }
+
+  const nextImg = () => setCurrentImgIndex(prev => (prev + 1) % images.length);
+  const prevImg = () => setCurrentImgIndex(prev => (prev - 1 + images.length) % images.length);
 
   useEffect(() => {
     async function fetchArticle() {
@@ -109,6 +126,11 @@ function ArticleView() {
       
       <div className="article-meta">
         <span>{new Date(article.date || article.publishDate).toLocaleDateString()}</span>
+        {article.source && (
+          <span>
+            • Source: {article.sourceLink ? <a href={article.sourceLink} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--pur)', textDecoration: 'none' }}>{article.source}</a> : article.source}
+          </span>
+        )}
         {article.tags && article.tags.map(tag => (
           <span key={tag} className="tag-badge">{tag}</span>
         ))}
@@ -116,9 +138,15 @@ function ArticleView() {
       
       <h1 className="article-title">{article.title}</h1>
 
-      {article.imageUrl && (
+      {images.length > 0 && (
         <div className="news-visual">
-          <img src={article.imageUrl} alt={article.title} className="news-visual-img" />
+          {images.length > 1 && (
+            <button className="carousel-btn left" onClick={prevImg}>&#10094;</button>
+          )}
+          <img src={images[currentImgIndex]} alt={article.title} className="news-visual-img" />
+          {images.length > 1 && (
+            <button className="carousel-btn right" onClick={nextImg}>&#10095;</button>
+          )}
         </div>
       )}
 
