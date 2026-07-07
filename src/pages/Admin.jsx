@@ -141,6 +141,39 @@ function Admin() {
     });
   };
 
+  const removeImageUrl = (idxToRemove) => {
+    setFormData(prev => {
+      const newUrls = prev.imageUrls.filter((_, idx) => idx !== idxToRemove);
+      return { ...prev, imageUrls: newUrls.length > 0 ? newUrls : [''] };
+    });
+  };
+
+  const removeQuestion = (level, qIndexToRemove) => {
+    setFormData(prev => ({
+      ...prev,
+      levels: {
+        ...prev.levels,
+        [level]: {
+          ...prev.levels[level],
+          questions: prev.levels[level].questions.filter((_, idx) => idx !== qIndexToRemove)
+        }
+      }
+    }));
+  };
+
+  const removeVocabulary = (level, vIndexToRemove) => {
+    setFormData(prev => ({
+      ...prev,
+      levels: {
+        ...prev.levels,
+        [level]: {
+          ...prev.levels[level],
+          vocabulary: prev.levels[level].vocabulary.filter((_, idx) => idx !== vIndexToRemove)
+        }
+      }
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
@@ -264,6 +297,9 @@ function Admin() {
                   {idx === formData.imageUrls.length - 1 && (
                     <button type="button" className="btn btn-outline" onClick={() => setFormData({...formData, imageUrls: [...formData.imageUrls, '']})}>+</button>
                   )}
+                  {formData.imageUrls.length > 1 && (
+                    <button type="button" className="btn btn-outline" style={{ borderColor: '#ef4444', color: '#ef4444', padding: '0 0.8rem' }} onClick={() => removeImageUrl(idx)}>✕</button>
+                  )}
                 </div>
               ))}
             </div>
@@ -293,6 +329,7 @@ function Admin() {
                     <div key={vIdx} style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
                       <input className="form-control" placeholder="Term" value={v.term} onChange={e => updateVocabulary(level, vIdx, 'term', e.target.value)} />
                       <input className="form-control" placeholder="Meaning" value={v.meaning} onChange={e => updateVocabulary(level, vIdx, 'meaning', e.target.value)} />
+                      <button type="button" className="btn btn-outline" style={{ borderColor: '#ef4444', color: '#ef4444', padding: '0 0.8rem' }} onClick={() => removeVocabulary(level, vIdx)}>✕</button>
                     </div>
                   ))}
                   <button type="button" className="btn btn-outline" style={{ marginTop: '10px' }} onClick={() => addVocabulary(level)}>+ Add Vocabulary</button>
@@ -301,7 +338,8 @@ function Admin() {
                 <div style={{ marginBottom: '1rem' }}>
                   <h4>Questions</h4>
                   {formData.levels[level].questions.map((q, qIdx) => (
-                    <div key={qIdx} style={{ border: '1px solid #ccc', padding: '1rem', marginTop: '10px', background: '#fff', borderRadius: '4px' }}>
+                    <div key={qIdx} style={{ border: '1px solid #ccc', padding: '1.5rem 1rem 1rem 1rem', marginTop: '10px', background: '#fff', borderRadius: '4px', position: 'relative' }}>
+                      <button type="button" className="btn btn-outline" style={{ position: 'absolute', top: '10px', right: '10px', borderColor: '#ef4444', color: '#ef4444', padding: '0 0.6rem', fontSize: '0.8rem' }} onClick={() => removeQuestion(level, qIdx)}>✕</button>
                       <input className="form-control" placeholder="Question?" value={q.question} onChange={e => updateQuestion(level, qIdx, 'question', e.target.value)} style={{ marginBottom: '10px' }} />
                       {q.options.map((opt, optIdx) => (
                         <div key={optIdx} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '5px' }}>
