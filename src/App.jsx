@@ -22,7 +22,7 @@ function Header() {
           <Link to="/?tag=politics">Politics</Link>
           <Link to="/?tag=economy">Economy</Link>
           <Link to="/?tag=technology">Technology</Link>
-          <Link to="/?tag=pop & art">Pop & Art</Link>
+          <Link to={`/?tag=${encodeURIComponent('Pop & Art')}`}>Pop & Art</Link>
         </nav>
       </div>
     </header>
