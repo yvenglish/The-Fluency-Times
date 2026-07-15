@@ -1,14 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
 function ArticleView() {
   const { id } = useParams();
-  const [article, setArticle] = useState(null);
+  const location = useLocation();
+  const initialArticle = location.state?.article;
+  
+  const [article, setArticle] = useState(initialArticle || null);
   const [currentLevel, setCurrentLevel] = useState(1);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!initialArticle);
   
   // Quiz states
   const [answers, setAnswers] = useState({});
@@ -41,13 +44,15 @@ function ArticleView() {
     window.scrollTo(0, 0);
     
     async function fetchArticle() {
-      setLoading(true);
+      if (!initialArticle) {
+        setLoading(true);
+      }
       try {
         const docRef = doc(db, 'articles', id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           setArticle({ id: docSnap.id, ...docSnap.data() });
-        } else {
+        } else if (!initialArticle) {
           setArticle(null);
         }
       } catch (error) {

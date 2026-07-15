@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
 function Home() {
-  const [articles, setArticles] = useState([]);
+  const [allArticles, setAllArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   
   const location = useLocation();
@@ -22,15 +22,7 @@ function Home() {
           ...doc.data()
         }));
         
-        // Filter out future publish dates and match tags
-        const now = new Date().toISOString();
-        let filtered = data.filter(a => !a.publishDate || a.publishDate <= now);
-        
-        if (tagFilter) {
-          filtered = filtered.filter(a => a.tags && a.tags.map(t=>t.toLowerCase()).includes(tagFilter.toLowerCase()));
-        }
-        
-        setArticles(filtered);
+        setAllArticles(data);
       } catch (error) {
         console.error("Error fetching articles:", error);
       } finally {
@@ -38,7 +30,15 @@ function Home() {
       }
     }
     fetchArticles();
-  }, [tagFilter]);
+  }, []); // Only fetch once on mount
+
+  // Filter synchronously
+  const now = new Date().toISOString();
+  let displayedArticles = allArticles.filter(a => !a.publishDate || a.publishDate <= now);
+  
+  if (tagFilter) {
+    displayedArticles = displayedArticles.filter(a => a.tags && a.tags.map(t=>t.toLowerCase()).includes(tagFilter.toLowerCase()));
+  }
 
   if (loading) return <div style={{textAlign: 'center', padding: '3rem'}}>Loading...</div>;
 
@@ -49,12 +49,12 @@ function Home() {
       </Helmet>
       {tagFilter && <h2 className="serif-title" style={{marginBottom: '2rem'}}>Showing news for: <span style={{color: 'var(--pur)'}}>{tagFilter}</span></h2>}
       
-      {articles.length === 0 ? (
+      {displayedArticles.length === 0 ? (
         <p>No articles found.</p>
       ) : (
         <div className="article-grid">
-          {articles.map(article => (
-            <Link to={`/article/${article.id}`} key={article.id} style={{textDecoration: 'none'}}>
+          {displayedArticles.map(article => (
+            <Link to={`/article/${article.id}`} state={{ article }} key={article.id} style={{textDecoration: 'none'}}>
               <div className="news-card">
                 {((article.imageUrls && article.imageUrls.length > 0) ? article.imageUrls[0] : article.imageUrl) && (
                   <div className="news-visual">
