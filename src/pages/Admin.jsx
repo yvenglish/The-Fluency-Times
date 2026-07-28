@@ -18,6 +18,7 @@ const emptyForm = {
 };
 
 function Admin() {
+  const [adminTab, setAdminTab] = useState('articles'); // 'articles' or 'leads'
   const [view, setView] = useState('list'); // 'list' or 'form'
   const [articles, setArticles] = useState([]);
   const [loadingList, setLoadingList] = useState(false);
@@ -47,11 +48,37 @@ function Admin() {
     }
   };
 
+  const [leads, setLeads] = useState([]);
+  const [loadingLeads, setLoadingLeads] = useState(false);
+
+  const fetchLeads = async () => {
+    setLoadingLeads(true);
+    try {
+      const q = query(collection(db, 'leads'), orderBy('date', 'desc'));
+      const querySnapshot = await getDocs(q);
+      const data = querySnapshot.docs.map(docSnap => ({
+        id: docSnap.id,
+        ...docSnap.data()
+      }));
+      setLeads(data);
+    } catch (error) {
+      console.error("Error fetching leads:", error);
+    } finally {
+      setLoadingLeads(false);
+    }
+  };
+
   useEffect(() => {
-    if (view === 'list') {
+    if (adminTab === 'articles' && view === 'list') {
       fetchArticles();
     }
-  }, [view]);
+  }, [view, adminTab]);
+
+  useEffect(() => {
+    if (adminTab === 'leads') {
+      fetchLeads();
+    }
+  }, [adminTab]);
 
   const confirmDelete = async () => {
     if (!articleToDelete) return;
@@ -206,17 +233,54 @@ function Admin() {
     <div style={{ maxWidth: '800px', margin: '0 auto', paddingBottom: '4rem' }}>
       
       {/* Header Area */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
         <h2 className="article-title">Admin Dashboard</h2>
-        {view === 'form' ? (
-          <button className="btn btn-outline" onClick={() => setView('list')}>View Posted Articles</button>
-        ) : (
-          <button className="btn" onClick={handleAddNewClick}>+ Add New Article</button>
+        {adminTab === 'articles' && (
+          view === 'form' ? (
+            <button className="btn btn-outline" onClick={() => setView('list')}>View Posted Articles</button>
+          ) : (
+            <button className="btn" onClick={handleAddNewClick}>+ Add New Article</button>
+          )
         )}
       </div>
 
+      <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', borderBottom: '2px solid var(--border)', paddingBottom: '1rem' }}>
+        <button 
+          className="btn"
+          style={{ background: adminTab === 'articles' ? 'var(--pur-dark)' : 'transparent', color: adminTab === 'articles' ? 'white' : 'var(--text-main)', border: adminTab === 'articles' ? 'none' : '1px solid var(--border)' }}
+          onClick={() => setAdminTab('articles')}
+        >
+          Manage Articles
+        </button>
+        <button 
+          className="btn"
+          style={{ background: adminTab === 'leads' ? 'var(--pur-dark)' : 'transparent', color: adminTab === 'leads' ? 'white' : 'var(--text-main)', border: adminTab === 'leads' ? 'none' : '1px solid var(--border)' }}
+          onClick={() => setAdminTab('leads')}
+        >
+          WhatsApp Leads
+        </button>
+      </div>
+
+      {/* Leads View */}
+      {adminTab === 'leads' && (
+        <div>
+          <h3 style={{ marginBottom: '1rem' }}>Registered WhatsApp Numbers</h3>
+          {loadingLeads ? <p>Loading leads...</p> : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              {leads.map(lead => (
+                <div key={lead.id} style={{ background: '#fff', padding: '1rem', borderRadius: '8px', border: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between' }}>
+                  <strong style={{ fontSize: '1.2rem', color: 'var(--pur-dark)' }}>{lead.phone}</strong>
+                  <span style={{ color: 'var(--text-muted)' }}>{new Date(lead.date).toLocaleString()}</span>
+                </div>
+              ))}
+              {leads.length === 0 && <p>No leads captured yet.</p>}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* List View */}
-      {view === 'list' && (
+      {adminTab === 'articles' && view === 'list' && (
         <div>
           {loadingList ? <p>Loading articles...</p> : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -241,7 +305,7 @@ function Admin() {
       )}
 
       {/* Form View */}
-      {view === 'form' && (
+      {adminTab === 'articles' && view === 'form' && (
         <div>
           <h3 style={{ marginBottom: '1rem', color: 'var(--text-muted)' }}>
             {editingId ? 'Editing Article' : 'Drafting New Article'}
