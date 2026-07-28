@@ -3,6 +3,7 @@ import { collection, query, orderBy, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { Link, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import WhatsAppCapture from '../WhatsAppCapture';
 
 function Home() {
   const [allArticles, setAllArticles] = useState([]);
@@ -76,6 +77,7 @@ function Home() {
           ))}
         </div>
       )}
+      <WhatsAppCapture />
     </div>
   );
 }

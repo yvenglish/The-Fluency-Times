@@ -3,6 +3,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import WhatsAppCapture from '../WhatsAppCapture';
 
 function ArticleView() {
   const { id } = useParams();
@@ -254,12 +255,19 @@ function ArticleView() {
                 {score === levelData.questions.length ? '🎉 Congratulations!' : 'Good effort!'}
               </h4>
               <p>You got {score} out of {levelData.questions.length} questions correct.</p>
-              <button className="btn btn-outline" style={{marginTop: '1rem'}} onClick={() => {setShowResults(false); setAnswers({});}}>Try Again</button>
+              
+              <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid #ccc' }}>
+                <h4 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'var(--pur-dark)' }}>Great job! Want to learn faster? Book a 1-on-1 session with our teachers.</h4>
+                <a href="https://www.yvenglish.com" target="_blank" rel="noopener noreferrer" className="btn" style={{ textDecoration: 'none', display: 'inline-block' }}>Book Session</a>
+              </div>
+              
+              <button className="btn btn-outline" style={{marginTop: '1.5rem', display: 'block', width: '100%'}} onClick={() => {setShowResults(false); setAnswers({});}}>Try Again</button>
             </div>
           )}
         </div>
       )}
 
+      <WhatsAppCapture />
     </div>
   );
 }

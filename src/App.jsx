@@ -4,6 +4,24 @@ import Home from './pages/Home';
 import Admin from './pages/Admin';
 import ArticleView from './pages/ArticleView';
 
+function TopBanner() {
+  const wpMessage = encodeURIComponent("Olá! Vim do The Fluency e ganhei 15% de desconto nas primeiras duas mensalidades.");
+  const wpLink = `https://wa.me/5521965126480?text=${wpMessage}`;
+  return (
+    <div style={{ background: 'var(--pur-dark)', color: 'white', padding: '0.75rem', textAlign: 'center', fontSize: '0.9rem', fontWeight: 500 }}>
+      Unlock your fluency! Get 15% off your first two months of Premium Classes. <a href={wpLink} target="_blank" rel="noopener noreferrer" style={{ color: '#fff', textDecoration: 'underline', fontWeight: 'bold', marginLeft: '10px' }}>Claim Offer</a>
+    </div>
+  );
+}
+
+function FloatingCTA() {
+  return (
+    <a href="https://www.yvenglish.com" target="_blank" rel="noopener noreferrer" className="floating-cta">
+      Start Learning 🚀
+    </a>
+  );
+}
+
 function Header() {
   return (
     <header className="header">
@@ -56,6 +74,7 @@ function App() {
           <img src="/logocircular_transparente.png" alt="YV English" className="splash-logo" />
         </div>
       )}
+      <TopBanner />
       <Header />
       <main className="container">
         <Routes>
@@ -72,6 +91,7 @@ function App() {
         />
         <p className="brand-subtitle" style={{ color: 'var(--text-muted)' }}>© {new Date().getFullYear()} YV English. All rights reserved.</p>
       </footer>
+      <FloatingCTA />
     </Router>
   );
 }
