@@ -257,7 +257,7 @@ function ArticleView() {
               <p>You got {score} out of {levelData.questions.length} questions correct.</p>
               
               <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid #ccc' }}>
-                <h4 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'var(--pur-dark)' }}>Great job! Want to learn faster? Book a 1-on-1 session with our teachers.</h4>
+                <h4 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'var(--pur-dark)' }}>Great job! Quer aprender mais rápido? Marque uma sessão 1 a 1 com os nossos professores.</h4>
                 <a href="https://www.yvenglish.com" target="_blank" rel="noopener noreferrer" className="btn" style={{ textDecoration: 'none', display: 'inline-block' }}>Book Session</a>
               </div>
               

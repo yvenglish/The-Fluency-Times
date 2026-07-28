@@ -46,7 +46,7 @@ function Home() {
   return (
     <div>
       <Helmet>
-        <title>{tagFilter ? `News about ${tagFilter} | The Fluency Times` : 'Latest News | The Fluency Times'}</title>
+        <title>The Fluency Times</title>
       </Helmet>
       {tagFilter && <h2 className="serif-title" style={{marginBottom: '2rem'}}>Showing news for: <span style={{color: 'var(--pur)'}}>{tagFilter}</span></h2>}
       
