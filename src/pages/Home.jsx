@@ -55,6 +55,18 @@ function Home() {
   const titleText = language === 'es' ? "El Tiempo de Fluencia" : "The Fluency News";
   const dateLocale = language === 'es' ? 'es-ES' : 'en-US';
 
+  const displayTag = () => {
+    if (!tagFilter) return '';
+    if (language !== 'es') return tagFilter;
+    const map = {
+      'politics': 'Política',
+      'economy': 'Economía',
+      'technology': 'Tecnología',
+      'pop & art': 'Pop & Arte'
+    };
+    return map[tagFilter.toLowerCase()] || tagFilter;
+  };
+
   if (loading) return <div style={{textAlign: 'center', padding: '3rem'}}>{tLoading}</div>;
 
   return (
@@ -62,7 +74,7 @@ function Home() {
       <Helmet>
         <title>{titleText}</title>
       </Helmet>
-      {tagFilter && <h2 className="serif-title" style={{marginBottom: '2rem'}}>{tShowing} <span style={{color: 'var(--pur)'}}>{tagFilter}</span></h2>}
+      {tagFilter && <h2 className="serif-title" style={{marginBottom: '2rem'}}>{tShowing} <span style={{color: 'var(--pur)'}}>{displayTag()}</span></h2>}
       
       {displayedArticles.length === 0 ? (
         <p>{tNoArticles}</p>

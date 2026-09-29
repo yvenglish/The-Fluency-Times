@@ -539,6 +539,16 @@ body.theme-es .audio-controls {
 body.theme-es .brand-title {
   color: var(--gold);
 }
+body.theme-es .article-title {
+  color: var(--pur);
+}
+.vocab-term {
+  font-weight: 700;
+  color: var(--pur-dark);
+}
+body.theme-es .vocab-term {
+  color: var(--gold);
+}
 .splash-es {
   background-color: #210E16 !important;
 }

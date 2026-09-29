@@ -204,6 +204,18 @@ function Admin() {
     }));
   };
 
+  const handleDeleteLead = async (leadId) => {
+    if (window.confirm("Tem certeza que deseja excluir este lead? Essa ação não pode ser desfeita.")) {
+      try {
+        await deleteDoc(doc(db, 'leads', leadId));
+        setLeads(prev => prev.filter(l => l.id !== leadId));
+      } catch (error) {
+        console.error("Erro ao deletar lead:", error);
+        alert("Erro ao excluir o lead. Tente novamente.");
+      }
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
@@ -287,11 +299,22 @@ function Admin() {
                       {lead.phone}
                     </div>
                   </div>
-                  <div style={{ textAlign: 'right' }}>
-                    <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 'bold', color: lead.language === 'es' ? 'var(--gold)' : 'var(--pur)' }}>
-                      {lead.language === 'es' ? 'Spanish (ES)' : 'English (EN)'}
-                    </span>
-                    <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{new Date(lead.date).toLocaleString()}</span>
+                  <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.4rem' }}>
+                      <div style={{ textAlign: 'right' }}>
+                        <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 'bold', color: lead.language === 'es' ? 'var(--gold)' : 'var(--pur)' }}>
+                          {lead.language === 'es' ? 'Spanish (ES)' : 'English (EN)'}
+                        </span>
+                        <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{new Date(lead.date).toLocaleString()}</span>
+                      </div>
+                      <button 
+                        onClick={() => handleDeleteLead(lead.id)}
+                        title="Delete Lead"
+                        style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem', padding: '0.2rem' }}
+                      >
+                        ✕
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}

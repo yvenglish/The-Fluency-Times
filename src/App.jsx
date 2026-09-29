@@ -79,7 +79,7 @@ function Header() {
           <Link to="/?tag=politics">{nav.politics}</Link>
           <Link to="/?tag=economy">{nav.economy}</Link>
           <Link to="/?tag=technology">{nav.tech}</Link>
-          <Link to={`/?tag=${encodeURIComponent(language === 'es' ? 'Pop & Arte' : 'Pop & Art')}`}>{nav.pop}</Link>
+          <Link to={`/?tag=${encodeURIComponent('Pop & Art')}`}>{nav.pop}</Link>
         </nav>
       </div>
     </header>
