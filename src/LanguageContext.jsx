@@ -8,6 +8,14 @@ export function LanguageProvider({ children }) {
   });
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const langParam = searchParams.get('lang');
+    if (langParam === 'es' || langParam === 'en') {
+      setLanguage(langParam);
+    }
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem('fluency_language', language);
     const favicon = document.querySelector("link[rel~='icon']");
     if (language === 'es') {

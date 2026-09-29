@@ -172,7 +172,7 @@ function ArticleView() {
   return (
     <div style={{ paddingBottom: '4rem' }}>
       <Helmet>
-        <title>{article.title} | {language === 'es' ? "El Tiempo de Fluencia" : "The Fluency News"}</title>
+        <title>{article.title} | {language === 'es' ? "El Tiempo de Fluencia | YV Español" : "The Fluency News"}</title>
         <meta name="description" content={levelData?.text?.substring(0, 160) + '...'} />
         {images.length > 0 && <meta property="og:image" content={images[0]} />}
       </Helmet>

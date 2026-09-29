@@ -52,7 +52,7 @@ function Home() {
   const tLoading = language === 'es' ? "Cargando..." : "Loading...";
   const tShowing = language === 'es' ? "Mostrando noticias de:" : "Showing news for:";
   const tNoArticles = language === 'es' ? "No se encontraron artículos." : "No articles found.";
-  const titleText = language === 'es' ? "El Tiempo de Fluencia" : "The Fluency News";
+  const titleText = language === 'es' ? "El Tiempo de Fluencia | YV Español" : "The Fluency News | YV English";
   const dateLocale = language === 'es' ? 'es-ES' : 'en-US';
 
   const displayTag = () => {
@@ -73,6 +73,9 @@ function Home() {
     <div>
       <Helmet>
         <title>{titleText}</title>
+        <meta property="og:title" content={titleText} />
+        <meta property="og:description" content={language === 'es' ? "Mejora tu español, una historia a la vez." : "Aprenda inglês de forma inteligente com notícias adaptadas."} />
+        <meta property="og:image" content={language === 'es' ? "/logobranca.png" : "/logocircular_transparente.png"} />
       </Helmet>
       {tagFilter && <h2 className="serif-title" style={{marginBottom: '2rem'}}>{tShowing} <span style={{color: 'var(--pur)'}}>{displayTag()}</span></h2>}
       
