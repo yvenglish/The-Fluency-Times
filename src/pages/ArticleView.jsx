@@ -144,6 +144,15 @@ function ArticleView() {
     handleStartAudio();
   };
 
+  const handleSpeakWord = (word) => {
+    const synth = window.speechSynthesis;
+    if (synth) synth.cancel();
+    const utterance = new SpeechSynthesisUtterance(word);
+    utterance.lang = language === 'es' ? "es-ES" : "en-US";
+    utterance.rate = 0.90;
+    synth.speak(utterance);
+  };
+
   // Quiz Functions
   const handleOptionSelect = (qIndex, optIndex) => {
     if (showResults) return; // Prevent changing after submit
@@ -234,7 +243,14 @@ function ArticleView() {
           <ul className="vocab-list">
             {levelData.vocabulary.map((v, i) => (
               <li key={i} className="vocab-item">
-                <span className="vocab-term">{v.term}</span>: <span className="serif-text">{v.meaning}</span>
+                <span 
+                  className="vocab-term" 
+                  onClick={() => handleSpeakWord(v.term)}
+                  title={language === 'es' ? "Escuchar pronunciación" : "Hear pronunciation"}
+                  style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}
+                >
+                  {v.term} <span style={{ fontSize: '0.8em', opacity: 0.7 }}>🔊</span>
+                </span>: <span className="serif-text">{v.meaning}</span>
               </li>
             ))}
           </ul>

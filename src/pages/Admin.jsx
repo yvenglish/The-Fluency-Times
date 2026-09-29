@@ -244,6 +244,45 @@ function Admin() {
     }
   };
 
+  const handleImportJSON = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        const jsonData = JSON.parse(event.target.result);
+        const articles = Array.isArray(jsonData) ? jsonData : [jsonData];
+        let successCount = 0;
+
+        for (const article of articles) {
+          const payload = {
+            title: article.title || '',
+            source: article.source || '',
+            sourceLink: article.sourceLink || '',
+            language: article.language || 'en',
+            date: article.date || new Date().toISOString().split('T')[0],
+            publishDate: article.publishDate || new Date().toISOString(),
+            imageUrls: article.imageUrls || [],
+            tags: Array.isArray(article.tags) ? article.tags : (article.tags ? article.tags.split(',').map(t => t.trim()) : []),
+            levels: article.levels || emptyForm.levels
+          };
+          await addDoc(collection(db, 'articles'), payload);
+          successCount++;
+        }
+
+        alert(`Sucesso! ${successCount} artigo(s) importado(s) via JSON.`);
+        fetchArticles();
+      } catch (error) {
+        console.error("Error importing JSON:", error);
+        alert("Erro ao importar JSON: Verifique o formato do arquivo.");
+      } finally {
+        e.target.value = null; // reset input
+      }
+    };
+    reader.readAsText(file);
+  };
+
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', paddingBottom: '4rem' }}>
       
@@ -254,7 +293,13 @@ function Admin() {
           view === 'form' ? (
             <button className="btn btn-outline" onClick={() => setView('list')}>View Posted Articles</button>
           ) : (
-            <button className="btn" onClick={handleAddNewClick}>+ Add New Article</button>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+              <label className="btn btn-outline" style={{ cursor: 'pointer', margin: 0 }}>
+                Import JSON
+                <input type="file" accept=".json" style={{ display: 'none' }} onChange={handleImportJSON} />
+              </label>
+              <button className="btn" onClick={handleAddNewClick}>+ Add New Article</button>
+            </div>
           )
         )}
       </div>
