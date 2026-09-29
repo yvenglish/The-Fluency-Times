@@ -75,7 +75,7 @@ function Home() {
         <title>{titleText}</title>
         <meta property="og:title" content={titleText} />
         <meta property="og:description" content={language === 'es' ? "Mejora tu español, una historia a la vez." : "Aprenda inglês de forma inteligente com notícias adaptadas."} />
-        <meta property="og:image" content={language === 'es' ? "/logobranca.png" : "/logocircular_transparente.png"} />
+        <meta property="og:image" content={language === 'es' ? "/og-espanhol.png" : "/logocircular_transparente.png"} />
       </Helmet>
       {tagFilter && <h2 className="serif-title" style={{marginBottom: '2rem'}}>{tShowing} <span style={{color: 'var(--pur)'}}>{displayTag()}</span></h2>}
       
