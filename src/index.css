@@ -545,6 +545,10 @@ body.theme-es .article-title {
 .vocab-term {
   font-weight: 700;
   color: var(--pur-dark);
+  transition: opacity 0.2s;
+}
+.vocab-term:hover {
+  opacity: 0.7;
 }
 body.theme-es .vocab-term {
   color: var(--gold);

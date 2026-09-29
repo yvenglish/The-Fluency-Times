@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Admin from './pages/Admin';
 import ArticleView from './pages/ArticleView';
@@ -33,7 +33,13 @@ function FloatingCTA() {
 
 function Header() {
   const { language, toggleLanguage } = useLanguage();
+  const navigate = useNavigate();
   
+  const handleToggle = () => {
+    toggleLanguage();
+    navigate('/');
+  };
+
   const dateLocale = language === 'es' ? 'es-ES' : 'en-US';
   const subtitle = language === 'es' ? "Mejora tu español, una historia a la vez." : "Elevate your English, one story at a time.";
   const edition = language === 'es' ? "Edición Diaria" : "Daily Edition";
@@ -62,7 +68,7 @@ function Header() {
           <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
             <span>{edition}</span>
             <button 
-              onClick={toggleLanguage} 
+              onClick={handleToggle} 
               style={{ background: 'transparent', border: '1px solid var(--text-muted)', color: 'var(--text-main)', borderRadius: '4px', padding: '2px 8px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: 'bold' }}
             >
               {language === 'es' ? 'EN' : 'ES'}
