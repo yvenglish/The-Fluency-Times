@@ -4,10 +4,12 @@ import { db } from '../firebase';
 import { Link, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import WhatsAppCapture from '../WhatsAppCapture';
+import { useLanguage } from '../LanguageContext';
 
 function Home() {
   const [allArticles, setAllArticles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { language } = useLanguage();
   
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -33,25 +35,37 @@ function Home() {
     fetchArticles();
   }, []); // Only fetch once on mount
 
-  // Filter synchronously
+  // Filter synchronously by language and date
   const now = new Date().toISOString();
   let displayedArticles = allArticles.filter(a => !a.publishDate || a.publishDate <= now);
   
+  // Filter by language (if language is undefined/missing in article, assume it's English 'en' for backward compatibility)
+  displayedArticles = displayedArticles.filter(a => {
+    const articleLang = a.language || 'en';
+    return articleLang === language;
+  });
+
   if (tagFilter) {
     displayedArticles = displayedArticles.filter(a => a.tags && a.tags.map(t=>t.toLowerCase()).includes(tagFilter.toLowerCase()));
   }
 
-  if (loading) return <div style={{textAlign: 'center', padding: '3rem'}}>Loading...</div>;
+  const tLoading = language === 'es' ? "Cargando..." : "Loading...";
+  const tShowing = language === 'es' ? "Mostrando noticias de:" : "Showing news for:";
+  const tNoArticles = language === 'es' ? "No se encontraron artículos." : "No articles found.";
+  const titleText = language === 'es' ? "El Tiempo de Fluencia" : "The Fluency News";
+  const dateLocale = language === 'es' ? 'es-ES' : 'en-US';
+
+  if (loading) return <div style={{textAlign: 'center', padding: '3rem'}}>{tLoading}</div>;
 
   return (
     <div>
       <Helmet>
-        <title>The Fluency Times</title>
+        <title>{titleText}</title>
       </Helmet>
-      {tagFilter && <h2 className="serif-title" style={{marginBottom: '2rem'}}>Showing news for: <span style={{color: 'var(--pur)'}}>{tagFilter}</span></h2>}
+      {tagFilter && <h2 className="serif-title" style={{marginBottom: '2rem'}}>{tShowing} <span style={{color: 'var(--pur)'}}>{tagFilter}</span></h2>}
       
       {displayedArticles.length === 0 ? (
-        <p>No articles found.</p>
+        <p>{tNoArticles}</p>
       ) : (
         <div className="article-grid">
           {displayedArticles.map(article => (
@@ -63,7 +77,7 @@ function Home() {
                   </div>
                 )}
                 <div className="article-meta">
-                  <span>{new Date(article.date || article.publishDate).toLocaleDateString()}</span>
+                  <span>{new Date(article.date || article.publishDate).toLocaleDateString(dateLocale)}</span>
                   {article.tags && article.tags.map(tag => (
                     <span key={tag} className="tag-badge">{tag}</span>
                   ))}

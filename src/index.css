@@ -314,6 +314,8 @@ h1, h2, h3, .serif-title {
   border-radius: 4px;
   font-family: inherit;
   font-size: 1rem;
+  background-color: var(--bg);
+  color: var(--text-main);
 }
 .form-control:focus {
   outline: none;
@@ -321,7 +323,7 @@ h1, h2, h3, .serif-title {
   box-shadow: 0 0 0 2px rgba(102,51,170,0.2);
 }
 textarea.form-control {
-  min-height: 100px;
+  min-height: 300px;
   resize: vertical;
 }
 
@@ -497,4 +499,55 @@ textarea.form-control {
     padding: 0.8rem 1.2rem;
     font-size: 0.9rem;
   }
+}
+
+/* Spanish Theme Colors */
+body.theme-es {
+  --bg: #210E16;
+  --bg-card: #2B1823;
+  --text-main: #FFF9F2;
+  --text-muted: #CDB8B3;
+  
+  --pur: #D96745;
+  --pur-light: #D98B7C;
+  --pur-dark: #351526;
+  --gold: #F09A4A;
+  --gold-light: #FFF7ED;
+  
+  --border: rgba(217, 103, 69, 0.15);
+  --border-heavy: rgba(217, 103, 69, 0.3);
+}
+
+body.theme-es .news-visual::before {
+  background: rgba(240, 154, 74, 0.18); /* customized translucent version of gold for dark mode */
+}
+body.theme-es .vocab-section {
+  background: #2b1c20;
+}
+body.theme-es .quiz-option {
+  background: #210E16;
+}
+body.theme-es .quiz-option:hover {
+  background: #351526;
+}
+body.theme-es .quiz-option.selected {
+  background: #3a2228;
+}
+body.theme-es .audio-controls {
+  background: #2B1823;
+}
+body.theme-es .brand-title {
+  color: var(--gold);
+}
+.splash-es {
+  background-color: #210E16 !important;
+}
+
+.splash-es .splash-logo {
+  animation: pulseLogoEs 1.5s infinite alternate ease-in-out;
+}
+
+@keyframes pulseLogoEs {
+  0% { transform: scale(0.9); opacity: 0.8; filter: drop-shadow(0 0 15px rgba(255, 249, 242, 0.4)); }
+  100% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 40px rgba(255, 249, 242, 0.8)); }
 }

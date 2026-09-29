@@ -6,6 +6,7 @@ const emptyForm = {
   title: '',
   source: '',
   sourceLink: '',
+  language: 'en',
   date: new Date().toISOString().split('T')[0],
   publishDate: new Date().toISOString().slice(0,16),
   imageUrls: [''],
@@ -20,6 +21,7 @@ const emptyForm = {
 function Admin() {
   const [adminTab, setAdminTab] = useState('articles'); // 'articles' or 'leads'
   const [view, setView] = useState('list'); // 'list' or 'form'
+  const [leadFilter, setLeadFilter] = useState('all'); // 'all', 'en', 'es'
   const [articles, setArticles] = useState([]);
   const [loadingList, setLoadingList] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -98,6 +100,7 @@ function Admin() {
       title: article.title || '',
       source: article.source || '',
       sourceLink: article.sourceLink || '',
+      language: article.language || 'en',
       date: article.date || new Date().toISOString().split('T')[0],
       publishDate: article.publishDate ? (article.publishDate.length > 16 ? new Date(article.publishDate).toISOString().slice(0,16) : article.publishDate.slice(0,16)) : new Date().toISOString().slice(0,16),
       imageUrls: (article.imageUrls && article.imageUrls.length > 0) ? article.imageUrls : (article.imageUrl ? [article.imageUrl] : ['']),
@@ -264,16 +267,35 @@ function Admin() {
       {/* Leads View */}
       {adminTab === 'leads' && (
         <div>
-          <h3 style={{ marginBottom: '1rem' }}>Registered WhatsApp Numbers</h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+            <h3>Registered WhatsApp Numbers</h3>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <button className={`btn ${leadFilter === 'all' ? '' : 'btn-outline'}`} onClick={() => setLeadFilter('all')} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>All</button>
+              <button className={`btn ${leadFilter === 'en' ? '' : 'btn-outline'}`} onClick={() => setLeadFilter('en')} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>English</button>
+              <button className={`btn ${leadFilter === 'es' ? '' : 'btn-outline'}`} onClick={() => setLeadFilter('es')} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>Spanish</button>
+            </div>
+          </div>
           {loadingLeads ? <p>Loading leads...</p> : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              {leads.map(lead => (
-                <div key={lead.id} style={{ background: '#fff', padding: '1rem', borderRadius: '8px', border: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between' }}>
-                  <strong style={{ fontSize: '1.2rem', color: 'var(--pur-dark)' }}>{lead.phone}</strong>
-                  <span style={{ color: 'var(--text-muted)' }}>{new Date(lead.date).toLocaleString()}</span>
+              {leads.filter(l => leadFilter === 'all' ? true : (l.language === leadFilter || (!l.language && leadFilter === 'en'))).map(lead => (
+                <div key={lead.id} style={{ background: 'var(--bg-card)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between' }}>
+                  <div>
+                    <strong style={{ fontSize: '1.2rem', color: 'var(--pur)' }}>
+                      {lead.name ? `${lead.name} ${lead.lastName || ''}` : 'No Name'}
+                    </strong>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '0.2rem' }}>
+                      {lead.phone}
+                    </div>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 'bold', color: lead.language === 'es' ? 'var(--gold)' : 'var(--pur)' }}>
+                      {lead.language === 'es' ? 'Spanish (ES)' : 'English (EN)'}
+                    </span>
+                    <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{new Date(lead.date).toLocaleString()}</span>
+                  </div>
                 </div>
               ))}
-              {leads.length === 0 && <p>No leads captured yet.</p>}
+              {leads.filter(l => leadFilter === 'all' ? true : (l.language === leadFilter || (!l.language && leadFilter === 'en'))).length === 0 && <p>No leads found for this filter.</p>}
             </div>
           )}
         </div>
@@ -285,11 +307,11 @@ function Admin() {
           {loadingList ? <p>Loading articles...</p> : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {articles.map(article => (
-                <div key={article.id} style={{ background: '#fff', padding: '1.5rem', borderRadius: '8px', border: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div key={article.id} style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: '8px', border: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div style={{ flex: 1, paddingRight: '1rem' }}>
-                    <h3 style={{ margin: '0 0 0.5rem 0', color: 'var(--pur-dark)', fontSize: '1.25rem' }}>{article.title}</h3>
+                    <h3 style={{ margin: '0 0 0.5rem 0', color: 'var(--pur)', fontSize: '1.25rem' }}>{article.title}</h3>
                     <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                      Published: {new Date(article.publishDate || article.date).toLocaleString()}
+                      Published: {new Date(article.publishDate || article.date).toLocaleString()} | Language: {article.language?.toUpperCase() || 'EN'}
                     </div>
                   </div>
                   <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
@@ -379,12 +401,30 @@ function Admin() {
               </select>
             </div>
 
+            <div className="form-group">
+              <label className="form-label">Language</label>
+              <select className="form-control" value={formData.language} onChange={e => setFormData({...formData, language: e.target.value})}>
+                <option value="en">English (en)</option>
+                <option value="es">Español (es)</option>
+              </select>
+            </div>
+
             {[1, 2, 3].map(level => (
-              <div key={level} style={{ background: '#f5f5f5', padding: '1rem', marginBottom: '2rem', borderRadius: '8px' }}>
+              <div key={level} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', padding: '1rem', marginBottom: '2rem', borderRadius: '8px' }}>
                 <h3>Level {level} Content</h3>
                 <div className="form-group" style={{ marginTop: '1rem' }}>
-                  <label className="form-label">Text</label>
-                  <textarea className="form-control" rows="5" value={formData.levels[level].text} onChange={e => handleLevelTextChange(level, e.target.value)} required />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                    <label className="form-label" style={{ marginBottom: 0 }}>Text</label>
+                    <button type="button" className="btn btn-outline" style={{ padding: '0.2rem 0.6rem', fontSize: '0.8rem' }} onClick={() => {
+                      const text = formData.levels[level].text;
+                      if (!text) return;
+                      const formatted = text.replace(/\n(?!\n)/g, '\n\n');
+                      handleLevelTextChange(level, formatted);
+                    }}>
+                      Espaçar Parágrafos
+                    </button>
+                  </div>
+                  <textarea className="form-control" rows="12" style={{ lineHeight: '1.6', fontSize: '1.05rem', padding: '1rem' }} value={formData.levels[level].text} onChange={e => handleLevelTextChange(level, e.target.value)} required />
                 </div>
 
                 <div style={{ marginBottom: '1rem' }}>
@@ -402,7 +442,7 @@ function Admin() {
                 <div style={{ marginBottom: '1rem' }}>
                   <h4>Questions</h4>
                   {formData.levels[level].questions.map((q, qIdx) => (
-                    <div key={qIdx} style={{ border: '1px solid #ccc', padding: '1.5rem 1rem 1rem 1rem', marginTop: '10px', background: '#fff', borderRadius: '4px', position: 'relative' }}>
+                    <div key={qIdx} style={{ border: '1px solid var(--border)', padding: '1.5rem 1rem 1rem 1rem', marginTop: '10px', background: 'var(--bg)', borderRadius: '4px', position: 'relative' }}>
                       <button type="button" className="btn btn-outline" style={{ position: 'absolute', top: '10px', right: '10px', borderColor: '#ef4444', color: '#ef4444', padding: '0 0.6rem', fontSize: '0.8rem' }} onClick={() => removeQuestion(level, qIdx)}>✕</button>
                       <input className="form-control" placeholder="Question?" value={q.question} onChange={e => updateQuestion(level, qIdx, 'question', e.target.value)} style={{ marginBottom: '10px' }} />
                       {q.options.map((opt, optIdx) => (

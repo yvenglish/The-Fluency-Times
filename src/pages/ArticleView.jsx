@@ -4,11 +4,13 @@ import { db } from '../firebase';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import WhatsAppCapture from '../WhatsAppCapture';
+import { useLanguage } from '../LanguageContext';
 
 function ArticleView() {
   const { id } = useParams();
   const location = useLocation();
   const initialArticle = location.state?.article;
+  const { language } = useLanguage();
   
   const [article, setArticle] = useState(initialArticle || null);
   const [currentLevel, setCurrentLevel] = useState(1);
@@ -78,8 +80,35 @@ function ArticleView() {
     setIsPaused(false);
   }, [currentLevel]);
 
-  if (loading) return <div style={{textAlign: 'center', padding: '3rem'}}>Loading...</div>;
-  if (!article) return <div style={{textAlign: 'center', padding: '3rem'}}>Article not found.</div>;
+  // Translations
+  const t = {
+    loading: language === 'es' ? "Cargando..." : "Loading...",
+    notFound: language === 'es' ? "Artículo no encontrado." : "Article not found.",
+    back: language === 'es' ? "← Volver a Noticias" : "← Back to News",
+    source: language === 'es' ? "Fuente" : "Source",
+    level: language === 'es' ? "Nivel" : "Level",
+    playAudio: language === 'es' ? "Reproducir Audio" : "Play Audio",
+    restartAudio: language === 'es' ? "Reiniciar Audio" : "Restart Audio",
+    pause: language === 'es' ? "Pausar" : "Pause",
+    resume: language === 'es' ? "Reanudar" : "Resume",
+    vocabTitle: language === 'es' ? "Vocabulario Clave" : "Key Vocabulary",
+    checkUnderstanding: language === 'es' ? "Comprueba tu comprensión" : "Check your understanding",
+    submitAnswers: language === 'es' ? "Enviar Respuestas" : "Submit Answers",
+    congrats: language === 'es' ? "🎉 ¡Felicidades!" : "🎉 Congratulations!",
+    goodEffort: language === 'es' ? "¡Buen esfuerzo!" : "Good effort!",
+    scoreText: (score, total) => language === 'es' 
+      ? `Acertaste ${score} de ${total} preguntas.` 
+      : `You got ${score} out of ${total} questions correct.`,
+    promoText: language === 'es'
+      ? "¡Excelente trabajo! ¿Quieres aprender más rápido? Reserva una sesión 1 a 1 con nuestros profesores."
+      : "Great job! Quer aprender mais rápido? Marque uma sessão 1 a 1 com os nossos professores.",
+    bookSession: language === 'es' ? "Reservar Sesión" : "Book Session",
+    tryAgain: language === 'es' ? "Intentar de nuevo" : "Try Again",
+    dateLocale: language === 'es' ? 'es-ES' : 'en-US'
+  };
+
+  if (loading) return <div style={{textAlign: 'center', padding: '3rem'}}>{t.loading}</div>;
+  if (!article) return <div style={{textAlign: 'center', padding: '3rem'}}>{t.notFound}</div>;
 
   const levelData = article.levels[currentLevel];
 
@@ -87,7 +116,7 @@ function ArticleView() {
   const handleStartAudio = () => {
     synth.cancel();
     const utterance = new SpeechSynthesisUtterance(levelData.text);
-    utterance.lang = "en-US";
+    utterance.lang = language === 'es' ? "es-ES" : "en-US";
     utterance.rate = 0.95;
     
     utterance.onend = () => {
@@ -132,21 +161,29 @@ function ArticleView() {
     });
   }
 
+  // Quiz styling for dark mode
+  const correctBg = language === 'es' ? '#166534' : '#dcfce7';
+  const correctBorder = language === 'es' ? '#22c55e' : 'transparent';
+  const correctText = language === 'es' ? '#dcfce7' : '#166534';
+  
+  const neutralBg = language === 'es' ? '#351526' : '#f3f4f6';
+  const neutralText = language === 'es' ? '#FFF9F2' : 'inherit';
+
   return (
     <div style={{ paddingBottom: '4rem' }}>
       <Helmet>
-        <title>{article.title} | The Fluency Times</title>
+        <title>{article.title} | {language === 'es' ? "El Tiempo de Fluencia" : "The Fluency News"}</title>
         <meta name="description" content={levelData?.text?.substring(0, 160) + '...'} />
         {images.length > 0 && <meta property="og:image" content={images[0]} />}
       </Helmet>
 
-      <Link to="/" style={{ color: 'var(--pur)', textDecoration: 'none', fontWeight: 600, display: 'inline-block', marginBottom: '1.5rem' }}>← Back to News</Link>
+      <Link to="/" style={{ color: 'var(--pur)', textDecoration: 'none', fontWeight: 600, display: 'inline-block', marginBottom: '1.5rem' }}>{t.back}</Link>
       
       <div className="article-meta">
-        <span>{new Date(article.date || article.publishDate).toLocaleDateString()}</span>
+        <span>{new Date(article.date || article.publishDate).toLocaleDateString(t.dateLocale)}</span>
         {article.source && (
           <span>
-            • Source: {article.sourceLink ? <a href={article.sourceLink} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--pur)', textDecoration: 'none' }}>{article.source}</a> : article.source}
+            • {t.source}: {article.sourceLink ? <a href={article.sourceLink} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--pur)', textDecoration: 'none' }}>{article.source}</a> : article.source}
           </span>
         )}
         {article.tags && article.tags.map(tag => (
@@ -175,27 +212,25 @@ function ArticleView() {
             className={`btn ${currentLevel === level ? 'btn-active' : 'btn-outline'}`}
             onClick={() => setCurrentLevel(level)}
           >
-            Level {level}
+            {t.level} {level}
           </button>
         ))}
       </div>
 
       <div className="audio-controls">
-        <button className="btn" onClick={handleStartAudio}>{isPlaying ? 'Restart Audio' : 'Play Audio'}</button>
+        <button className="btn" onClick={handleStartAudio}>{isPlaying ? t.restartAudio : t.playAudio}</button>
         <button className="btn btn-outline" onClick={handlePauseResume} disabled={!isPlaying}>
-          {isPaused ? 'Resume' : 'Pause'}
+          {isPaused ? t.resume : t.pause}
         </button>
       </div>
 
-      <div className="article-text serif-text">
-        {levelData?.text?.split('\n').map((paragraph, i) => (
-          <p key={i} style={{marginBottom: '1rem'}}>{paragraph}</p>
-        ))}
+      <div className="article-text serif-text" style={{ whiteSpace: 'pre-wrap', paddingBottom: '1rem' }}>
+        {levelData?.text}
       </div>
 
       {levelData?.vocabulary && levelData.vocabulary.length > 0 && (
         <div className="vocab-section">
-          <h3 className="vocab-title">Key Vocabulary</h3>
+          <h3 className="vocab-title">{t.vocabTitle}</h3>
           <ul className="vocab-list">
             {levelData.vocabulary.map((v, i) => (
               <li key={i} className="vocab-item">
@@ -208,7 +243,7 @@ function ArticleView() {
 
       {levelData?.questions && levelData.questions.length > 0 && (
         <div className="quiz-section">
-          <h3 className="serif-title" style={{fontSize: '1.8rem', marginBottom: '1.5rem'}}>Check your understanding</h3>
+          <h3 className="serif-title" style={{fontSize: '1.8rem', marginBottom: '1.5rem'}}>{t.checkUnderstanding}</h3>
           
           {levelData.questions.map((q, qIndex) => (
             <div key={qIndex} className="quiz-question">
@@ -247,21 +282,29 @@ function ArticleView() {
               onClick={handleSubmitQuiz}
               disabled={Object.keys(answers).length < levelData.questions.length}
             >
-              Submit Answers
+              {t.submitAnswers}
             </button>
           ) : (
-            <div style={{ marginTop: '1.5rem', padding: '1rem', background: score === levelData.questions.length ? '#dcfce7' : '#f3f4f6', borderRadius: '8px', textAlign: 'center' }}>
-              <h4 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: score === levelData.questions.length ? '#166534' : 'inherit' }}>
-                {score === levelData.questions.length ? '🎉 Congratulations!' : 'Good effort!'}
+            <div style={{ 
+              marginTop: '1.5rem', 
+              padding: '1rem', 
+              background: score === levelData.questions.length ? correctBg : neutralBg,
+              color: score === levelData.questions.length ? correctText : neutralText,
+              border: score === levelData.questions.length ? `1px solid ${correctBorder}` : 'none',
+              borderRadius: '8px', 
+              textAlign: 'center' 
+            }}>
+              <h4 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>
+                {score === levelData.questions.length ? t.congrats : t.goodEffort}
               </h4>
-              <p>You got {score} out of {levelData.questions.length} questions correct.</p>
+              <p>{t.scoreText(score, levelData.questions.length)}</p>
               
-              <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid #ccc' }}>
-                <h4 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'var(--pur-dark)' }}>Great job! Quer aprender mais rápido? Marque uma sessão 1 a 1 com os nossos professores.</h4>
-                <a href="https://www.yvenglish.com" target="_blank" rel="noopener noreferrer" className="btn" style={{ textDecoration: 'none', display: 'inline-block' }}>Book Session</a>
+              <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border)' }}>
+                <h4 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'var(--pur-light)' }}>{t.promoText}</h4>
+                <a href="https://www.yvenglish.com" target="_blank" rel="noopener noreferrer" className="btn" style={{ textDecoration: 'none', display: 'inline-block' }}>{t.bookSession}</a>
               </div>
               
-              <button className="btn btn-outline" style={{marginTop: '1.5rem', display: 'block', width: '100%'}} onClick={() => {setShowResults(false); setAnswers({});}}>Try Again</button>
+              <button className="btn btn-outline" style={{marginTop: '1.5rem', display: 'block', width: '100%'}} onClick={() => {setShowResults(false); setAnswers({});}}>{t.tryAgain}</button>
             </div>
           )}
         </div>

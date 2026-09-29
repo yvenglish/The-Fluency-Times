@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from './firebase';
 import confetti from 'canvas-confetti';
+import { useLanguage } from './LanguageContext';
 
 const countries = [
   { code: '+55', flag: '🇧🇷', name: 'Brasil' },
@@ -19,15 +20,21 @@ const countries = [
 export default function WhatsAppCapture() {
   const [countryCode, setCountryCode] = useState('+55');
   const [phone, setPhone] = useState('');
+  const [name, setName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const { language } = useLanguage();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!phone) return;
+    if (!phone || !name) return;
     try {
       await addDoc(collection(db, 'leads'), {
+        name: name,
+        lastName: lastName,
         phone: `${countryCode} ${phone}`,
-        date: new Date().toISOString()
+        date: new Date().toISOString(),
+        language: language
       });
       setSubmitted(true);
       confetti({
@@ -40,18 +47,51 @@ export default function WhatsAppCapture() {
     }
   };
 
+  const titleText = language === 'es' 
+    ? "¿Quieres recibir notificaciones por WhatsApp cuando lleguen noticias y así perfeccionar de verdad tu español?" 
+    : "Quer receber notificação pelo WhatsApp quando chegar notícia e assim aperfeiçoar de verdade seu inglês?";
+    
+  const successText = language === 'es' 
+    ? "¡Inscripción realizada con éxito! ¡Felicidades! 🎉" 
+    : "Inscrição realizada com sucesso! Congratulations 🎉";
+
+  const placeholderText = language === 'es' ? "Tu número" : "Seu número";
+  const namePlaceholder = language === 'es' ? "Nombre" : "Nome";
+  const lastNamePlaceholder = language === 'es' ? "Apellido" : "Sobrenome";
+  const btnText = language === 'es' ? "Inscribirse" : "Inscrever-se";
+
+  const inputStyle = { flex: 1, padding: '0 15px', border: '1px solid var(--border)', borderRadius: '8px', height: '44px', fontSize: '1rem', outline: 'none', width: '100%', color: '#333' };
+
   return (
-    <div className="whatsapp-capture">
-      <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem', color: 'var(--pur-dark)' }}>
-        Quer receber notificação pelo WhatsApp quando chegar notícia e assim aperfeiçoar de verdade seu inglês?
+    <div className="whatsapp-capture" style={{ background: language === 'es' ? '#2B1823' : 'var(--bg)' }}>
+      <h3 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', color: language === 'es' ? 'var(--gold)' : 'var(--pur-dark)' }}>
+        {titleText}
       </h3>
       {submitted ? (
-        <div style={{ padding: '1rem', background: '#dcfce7', color: '#166534', borderRadius: '8px', fontWeight: 'bold' }}>
-          Número cadastrado com sucesso! Congratulations 🎉
+        <div style={{ padding: '1rem', background: language === 'es' ? '#166534' : '#dcfce7', color: language === 'es' ? '#dcfce7' : '#166534', borderRadius: '8px', fontWeight: 'bold' }}>
+          {successText}
         </div>
       ) : (
-        <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ display: 'flex', flex: 1, minWidth: '250px', textAlign: 'left', border: '1px solid var(--border)', borderRadius: '8px', overflow: 'hidden', background: '#fff' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '500px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', gap: '1rem' }}>
+            <input 
+              type="text" 
+              placeholder={namePlaceholder} 
+              value={name} 
+              onChange={(e) => setName(e.target.value)} 
+              required 
+              style={inputStyle}
+            />
+            <input 
+              type="text" 
+              placeholder={lastNamePlaceholder} 
+              value={lastName} 
+              onChange={(e) => setLastName(e.target.value)}
+              required
+              style={inputStyle}
+            />
+          </div>
+          <div style={{ display: 'flex', textAlign: 'left', border: '1px solid var(--border)', borderRadius: '8px', overflow: 'hidden', background: '#fff' }}>
             <select 
               value={countryCode} 
               onChange={e => setCountryCode(e.target.value)}
@@ -63,14 +103,14 @@ export default function WhatsAppCapture() {
             </select>
             <input 
               type="tel" 
-              placeholder="Seu número" 
+              placeholder={placeholderText} 
               value={phone} 
               onChange={(e) => setPhone(e.target.value)} 
               required 
-              style={{ flex: 1, padding: '0 15px', border: 'none', height: '44px', fontSize: '1rem', outline: 'none', width: '100%' }}
+              style={{ flex: 1, padding: '0 15px', border: 'none', height: '44px', fontSize: '1rem', outline: 'none', width: '100%', color: '#333' }}
             />
           </div>
-          <button type="submit" className="btn" style={{ height: '44px' }}>Inscrever-se</button>
+          <button type="submit" className="btn" style={{ height: '48px', fontSize: '1.1rem', marginTop: '0.5rem' }}>{btnText}</button>
         </form>
       )}
     </div>
