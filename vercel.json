@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/es",
+      "destination": "/es/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
