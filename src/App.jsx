@@ -7,11 +7,11 @@ import { LanguageProvider, useLanguage } from './LanguageContext';
 
 function TopBanner() {
   const { language } = useLanguage();
-  const wpMessage = encodeURIComponent("Olá! Vim do The Fluency e ganhei 15% de desconto nas primeiras duas mensalidades.");
+  const wpMessage = encodeURIComponent("Quero dar esse passo. Vim pelo The Fluency e ganhei 14% de desconto.");
   const wpLink = `https://wa.me/5521965126480?text=${wpMessage}`;
   
-  const text = language === 'es' ? "¡Desbloquea tu fluidez! Obtén 15% de descuento en tus dos primeros meses de Clases Premium." : "Unlock your fluency! Get 15% off your first two months of Premium Classes.";
-  const linkText = language === 'es' ? "Aprovechar Oferta" : "Claim Offer";
+  const text = "Seu mundo fica maior quando você fala outro idioma. Ganhe 14% de desconto nos dois primeiros meses de aulas.";
+  const linkText = "Quero dar o primeiro passo";
 
   return (
     <div style={{ background: 'var(--pur-dark)', color: 'white', padding: '0.75rem', textAlign: 'center', fontSize: '0.9rem', fontWeight: 500 }}>
